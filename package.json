@@ -1,0 +1,33 @@
+{
+  "name": "iia",
+  "version": "1.0.0",
+  "description": "iia",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon server/app.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^16.3.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1",
+    "nodemon": "^3.0.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trngbro/IIA.git"
+  },
+  "author": "Trung-Nghia and friend",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/trngbro/IIA/issues"
+  },
+  "homepage": "https://github.com/trngbro/IIA#readme"
+}
