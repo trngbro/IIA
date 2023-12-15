@@ -13,11 +13,11 @@ const userController = {
             success: true,
             data: [
                 { "userId": 'a', 'name': 'Someone', 'faculty': 'Tổ học phí' },
-                { "userId": 'a', 'name': 'Someone', 'faculty': 'Phòng công tác học sinh sinh viên' },
-                { "userId": 'a', 'name': 'Someone', 'faculty': 'Văn phòng tư vấn học đường' },
-                { "userId": 'a', 'name': 'Someone', 'faculty': 'Phòng thanh tra pháp chế' },
-                { "userId": 'a', 'name': 'Someone', 'faculty': 'Văn phòng Khoa công nghệ thông tin' },
-                { "userId": 'a', 'name': 'Someone', 'faculty': 'Văn phòng Đoàn hội' }
+                { "userId": 'b', 'name': 'Someone', 'faculty': 'Phòng công tác học sinh sinh viên' },
+                { "userId": 'c', 'name': 'Someone', 'faculty': 'Văn phòng tư vấn học đường' },
+                { "userId": 'd', 'name': 'Someone', 'faculty': 'Phòng thanh tra pháp chế' },
+                { "userId": 'e', 'name': 'Someone', 'faculty': 'Văn phòng Khoa công nghệ thông tin' },
+                { "userId": 'f', 'name': 'Someone', 'faculty': 'Văn phòng Đoàn hội' }
             ]
         }
 

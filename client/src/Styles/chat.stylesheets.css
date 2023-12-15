@@ -145,7 +145,7 @@ body {
     visibility: visible;
     transform: scale(1);
 }
-.chat-sidebar-profile-dropdown a {
+.chat-sidebar-profile-dropdown div {
     display: flex;
     align-items: center;
     padding: 8px 12px;
@@ -153,14 +153,14 @@ body {
     color: var(--slate-400);
     font-size: 14px;
 }
-.chat-sidebar-profile-dropdown a:hover {
+.chat-sidebar-profile-dropdown div:hover {
     background-color: var(--slate-100);
     color: var(--slate-600);
 }
-.chat-sidebar-profile-dropdown a:active {
+.chat-sidebar-profile-dropdown div:active {
     background-color: var(--slate-200);
 }
-.chat-sidebar-profile-dropdown a i {
+.chat-sidebar-profile-dropdown div i {
     margin-right: 12px;
     font-size: 17px;
 }
@@ -230,17 +230,17 @@ body {
     list-style-type: none;
     padding: 8px 0;
 }
-.content-messages-list > * > a {
+.content-messages-list > * > div {
     display: flex;
     align-items: center;
     text-decoration: none;
     color: var(--slate-700);
     padding: 6px 16px;
 }
-.content-messages-list > * > a:hover {
+.content-messages-list > * > div:hover {
     background-color: var(--slate-50);
 }
-.content-messages-list > .active > a {
+.content-messages-list > .active > div {
     background-color: var(--slate-100);
 }
 .content-message-title {
@@ -550,7 +550,7 @@ body {
     visibility: visible;
     transform: scale(1);
 }
-.conversation-item-dropdown-list a {
+.conversation-item-dropdown-list div {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -558,14 +558,14 @@ body {
     font-size: 13px;
     padding: 6px 12px;
 }
-.conversation-item-dropdown-list a:hover {
+.conversation-item-dropdown-list div:hover {
     background-color: var(--slate-100);
     color: var(--slate-600);
 }
-.conversation-item-dropdown-list a:active {
+.conversation-item-dropdown-list div:active {
     background-color: var(--slate-200);
 }
-.conversation-item-dropdown-list a i {
+.conversation-item-dropdown-list div i {
     font-size: 16px;
     margin-right: 8px;
 }
