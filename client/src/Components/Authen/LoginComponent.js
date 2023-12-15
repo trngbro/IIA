@@ -12,11 +12,26 @@ const LoginComponent = () => {
 
     const submitHandle = async () => {
         setIsLoading(true)
-
-        window.open(
-            `http://localhost:8080/auth/google/callback`,
-            "_self"
-        );
+        axios.get(`/test/login`)
+            .then(res => {
+                if (res.data.success === true) {
+                    localStorage.setItem("userInfoDataSaved", JSON.stringify(res.data));
+                    console.log(res.data)
+                    history.push("/otherpage")
+                }
+                else {
+                    setIsLoading(false)
+                    toast({
+                        title: 'Login fail.',
+                        description: "Student email is required.",
+                        status: 'error',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+                    return
+                }
+            })
+        return
     };
 
     return (

@@ -6,24 +6,6 @@ import ChatPage from './Pages/ChatPage';
 
 
 function App() {
-  const [user, setUser] = useState(null);
-
-  const getUser = async () => {
-    try {
-      const url = `http://localhost:8080/auth/login/success`;
-      console.log(url)
-      const { data } = await axios.get(url, { withCredentials: true });
-      console.log("Done", data)
-      setUser(data.user._json);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
   return (
     <div className="App">
       <Route

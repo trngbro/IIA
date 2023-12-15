@@ -1,9 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, Box, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
+import { useHistory } from "react-router-dom";
 import LoginComponent from '../Components/Authen/LoginComponent'
-import SignUpComponent from '../Components/Authen/LicenseComponent'
+import LicenseComponent from '../Components/Authen/LicenseComponent'
 
 const Homepage = () => {
+    const history = useHistory()
+    useEffect(() => {
+        const user = localStorage.getItem("userInfoDataSaved");
+        user == null ? history.push() : history.push("/otherpage");
+    })
     return (
         <Container maxW='xl' centerContent>
             <Box
@@ -48,7 +54,7 @@ const Homepage = () => {
                             <LoginComponent />
                         </TabPanel>
                         <TabPanel>
-                            <SignUpComponent />
+                            <LicenseComponent />
                         </TabPanel>
                     </TabPanels>
                 </Tabs>

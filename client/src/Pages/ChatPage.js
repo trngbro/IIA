@@ -8,7 +8,16 @@ const ChatPage = () => {
     const [chats, setChats] = useState([])
 
     const fetchChats = async () => {
-        console.log("OK")
+        const user = JSON.parse(localStorage.getItem("userInfoDataSaved"));
+        await axios.get(`/test/chatsData`, {
+            headers: {
+                'Authorization': `Basic ${user.token}`
+            },
+        }).then(res => {
+            setChats(res.data.data)
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     useEffect(() => {
@@ -65,81 +74,27 @@ const ChatPage = () => {
                                 </ul>
                                 <ul className="content-messages-list">
                                     <li className="content-message-title"><span>Recently</span></li>
-                                    <li>
-                                        <a href="./otherpage">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Someone</span>
-                                                <span className="content-message-text">Tổ học phí</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-unread">5</span>
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="./otherpage">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Someone</span>
-                                                <span className="content-message-text">Phòng công tác học sinh sinh viên</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="./otherpage">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Someone</span>
-                                                <span className="content-message-text">Văn phòng tư vấn học đường.</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-unread">5</span>
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="./otherpage">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Someone</span>
-                                                <span className="content-message-text">Phòng thanh tra pháp chế.</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="./otherpage">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Someone</span>
-                                                <span className="content-message-text">Văn phòng Khoa Công nghệ thông tin.</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-unread">5</span>
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="./otherpage">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Someone</span>
-                                                <span className="content-message-text">Văn phòng Đoàn hội.</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </a>
-                                    </li>
+                                    {
+                                        chats && chats.length > 0 &&
+
+                                        chats.map((chat, index) => {
+                                            return <>
+                                                <li key={chat.userId}>
+                                                    <a href="./otherpage">
+                                                        <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
+                                                        <span className="content-message-info">
+                                                            <span className="content-message-name">{chat.name}</span>
+                                                            <span className="content-message-text">{chat.faculty}</span>
+                                                        </span>
+                                                        <span className="content-message-more">
+                                                            <span className="content-message-unread">5</span>
+                                                            <span className="content-message-time">12:30</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </>
+                                        })
+                                    }
                                 </ul>
                             </div>
                         </div>
