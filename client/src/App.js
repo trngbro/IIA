@@ -1,8 +1,8 @@
-import './App.css';
 import { useEffect, useState, Navigate } from "react";
 import axios from "axios";
 import { Route } from 'react-router-dom';
 import Homepage from './Pages/Homepage';
+import ChatPage from './Pages/ChatPage';
 
 
 function App() {
@@ -31,7 +31,7 @@ function App() {
       />
 
       <Route
-        path="/otherpage" component={Homepage} exact
+        path="/otherpage" component={ChatPage} exact
       />
     </div>
   );
