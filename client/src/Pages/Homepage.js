@@ -6,11 +6,12 @@ import LicenseComponent from '../Components/Authen/LicenseComponent'
 
 const Homepage = () => {
     const history = useHistory()
-    useEffect(() => {
-        const user = localStorage.getItem("userInfoDataSaved");
-        user == null ? history.push() : history.push("/otherpage");
-    })
+    // useEffect(() => {
+    //     const user = localStorage.getItem("userInfoDataSaved");
+    //     user == null ? history.push() : history.push("/otherpage");
+    // })
     return (
+
         <Container maxW='xl' centerContent>
             <Box
                 d='flex'
@@ -26,7 +27,6 @@ const Homepage = () => {
                 <Text
                     fontSize="4xl"
                     fontFamily="Work sans"
-                    as="bold"
                     color="black"
                 >IIA</Text>
             </Box>
