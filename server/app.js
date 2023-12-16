@@ -3,11 +3,18 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const logger = require("morgan");
+const passport = require('passport');
+const session = require('express-session');
+const router = require('./routes/authRoutes')
 
-const app = express()
+const app = express();
 
+app.set('view engine', 'ejs');
+app.use(session({ secret: '52000109', resave: true, saveUninitialized: true }));
 app.use("/test", require("./routes/fakeRoutes"))
-
+app.use(passport.initialize());
+app.use(passport.session());
+require('./api/v1/helpers/passport');
 
 app.use(logger("dev", {
     skip: function (req, res) {
@@ -19,7 +26,7 @@ app.use(logger("dev", {
     }
 }));
 
-
+app.use(router)
 
 const PORT = process.env.PORT || 8080
 
