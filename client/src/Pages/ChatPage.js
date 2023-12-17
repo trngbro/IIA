@@ -5,29 +5,52 @@ import axios from 'axios'
 import ChatConversation from '../Components/ChatContent/ChatConversation.js'
 import './chatPageScripts.js'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min.js'
+import { useToast } from '@chakra-ui/react'
 
 const ChatPage = () => {
     const history = useHistory()
+    const toast = useToast();
     const [chats, setChats] = useState([])
     const [isChoose, setIsChoose] = useState(null)
     const [isSelectAvatar, setSelectAvatar] = useState(false)
-
-    const fetchChats = async () => {
-        const user = JSON.parse(localStorage.getItem("userToken"));
-    }
 
     const handleClickToNav = async (chat) => {
         setIsChoose(chat.userId)
         console.log(chat)
     }
 
-    const handleClickToLogout = async () => {
-        localStorage.clear();
-        history.push("/")
+    const handleClickToLogout = () => {
+        logoutAction()
     }
 
+    const logoutAction = () => {
+        localStorage.removeItem("userToken");
+        toast({
+            title: "Token broken",
+            description: "Sign in again",
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        })
+        history.push("/");
+    };
+
     useEffect(() => {
-        fetchChats()
+        const refreshPage = async (token) => {
+            const res = await axios.post('/login/validate', JSON.stringify({ token }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            return res.data.success ? true : false
+        }
+        let user = localStorage.getItem("userToken");
+        if (user) {
+            refreshPage(user) ? history.push("/otherpage") : logoutAction();
+        } else {
+            logoutAction()
+        }
     }, [])
 
     return (

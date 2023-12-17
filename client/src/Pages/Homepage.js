@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Box, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from '@chakra-ui/react'
+import { Container, Box, Text, Tabs, TabList, Tab, TabPanels, TabPanel, useToast } from '@chakra-ui/react'
 import { useHistory } from "react-router-dom";
 import LoginComponent from '../Components/Authen/LoginComponent'
 import LicenseComponent from '../Components/Authen/LicenseComponent'
@@ -7,6 +7,22 @@ import axios from 'axios';
 
 const Homepage = () => {
     const history = useHistory()
+    const toast = useToast();
+
+    const logoutAction = () => {
+        localStorage.removeItem("userToken");
+        toast({
+            title: "Token broken",
+            description: "Sign in again",
+            status: 'error',
+            duration: 3000,
+            isClosable: true,
+        })
+        setInterval(() => {
+            history.push("/");
+        }, 1000);
+    };
+
     useEffect(() => {
         const refreshPage = async (token) => {
             const res = await axios.post('/login/validate', JSON.stringify({ token }), {
@@ -19,7 +35,7 @@ const Homepage = () => {
         }
         let user = localStorage.getItem("userToken");
         if (user) {
-            refreshPage(user) ? history.push("/otherpage") : history.push("/logout");
+            refreshPage(user) ? history.push("/otherpage") : logoutAction();
         }
     })
     return (
