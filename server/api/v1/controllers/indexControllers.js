@@ -1,10 +1,11 @@
 const { jwtDecode } = require('jwt-decode')
 const jwt = require('jsonwebtoken')
+const asyncHandler = require('express-async-handler')
 const genarate = require("../configs/token.config")
 const User = require("../models/User")
 
 const indexController = {
-    loginChecking: async (req, res) => {
+    loginChecking: asyncHandler(async (req, res) => {
         try {
             let user = jwtDecode(req.body.credentialResponse.credential)
 
@@ -47,8 +48,8 @@ const indexController = {
                 message: "Fatal error"
             })
         }
-    },
-    validateToken: async (req, res) => {
+    }),
+    validateToken: asyncHandler(async (req, res) => {
         try {
             let user = jwt.verify(req.body.token, process.env.JWT)
 
@@ -70,7 +71,26 @@ const indexController = {
                 message: "Fatal error"
             })
         }
-    }
+    }),
+    listContact: asyncHandler(async (req, res) => {
+        let data = {
+            success: true,
+            data: [
+                { "userId": 'a', 'name': 'Someone', 'faculty': 'Tổ học phí' },
+                { "userId": 'b', 'name': 'Someone', 'faculty': 'Phòng công tác học sinh sinh viên' },
+                { "userId": 'c', 'name': 'Someone', 'faculty': 'Văn phòng tư vấn học đường' },
+                { "userId": 'd', 'name': 'Someone', 'faculty': 'Phòng thanh tra pháp chế' },
+                { "userId": 'e', 'name': 'Someone', 'faculty': 'Văn phòng Khoa công nghệ thông tin' },
+                { "userId": 'f', 'name': 'Someone', 'faculty': 'Văn phòng Đoàn hội' }
+            ]
+        }
+
+        res.json({
+            success: true,
+            message: "Validate success",
+            data: data
+        })
+    })
 }
 
 module.exports = indexController

@@ -37,17 +37,23 @@ const ChatPage = () => {
 
     useEffect(() => {
         const refreshPage = async (token) => {
-            const res = await axios.post('/login/validate', JSON.stringify({ token }), {
+            const res = await axios.post('/login/getContact', {}, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             });
 
-            return res.data.success ? true : false
+            return res.data
         }
         let user = localStorage.getItem("userToken");
         if (user) {
-            refreshPage(user) ? history.push("/otherpage") : logoutAction();
+            let data = refreshPage(user)
+            if (data.success) {
+                setChats(data.data)
+            } else if (!data.success && !data.message === 'Not authorized') {
+                logoutAction()
+            }
         } else {
             logoutAction()
         }
