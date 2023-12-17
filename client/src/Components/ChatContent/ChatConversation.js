@@ -10,17 +10,7 @@ const ChatConversation = (props) => {
 
     useEffect(() => {
         const fetchChats = async () => {
-            const user = JSON.parse(localStorage.getItem("userInfoDataSaved"));
-            await axios.get(`/test/chatData4Box?userGetData=${user.userId}&userContact=${userId}`, {
-                headers: {
-                    'Authorization': `Basic ${user.token}`
-                }
-            }).then(res => {
-                console.log(res.data)
-                setChats(res.data.data)
-            }).catch((err) => {
-                console.log(err)
-            })
+
         }
 
         fetchChats()

@@ -9,9 +9,11 @@ const bodyParser = require('body-parser');
 const logger = require("morgan");
 const passport = require('passport');
 const session = require('express-session');
-const router = require('./routes/authRoutes');
 
 //config db here
+const connectDB = require('./api/v1/configs/database.config');
+connectDB()
+
 
 const app = express();
 
@@ -58,7 +60,12 @@ app.use(helmet());
 app.use(cors());
 
 
-app.use(router)
+
+const indeRouter = require('./routes/indexRoutes');
+
+app.use("/login", indeRouter)
+
+
 app.use("/test", require("./routes/fakeRoutes"))
 
 const PORT = process.env.PORT || 8080

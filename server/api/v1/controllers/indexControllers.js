@@ -1,0 +1,76 @@
+const { jwtDecode } = require('jwt-decode')
+const jwt = require('jsonwebtoken')
+const genarate = require("../configs/token.config")
+const User = require("../models/User")
+
+const indexController = {
+    loginChecking: async (req, res) => {
+        try {
+            let user = jwtDecode(req.body.credentialResponse.credential)
+
+            let findUser = await User.findOne({ email: user.email })
+            if (!findUser) {
+                if (user.hd && user.hd === 'student.tdtu.edu.vn' && user.email_verified) {
+                    let newUser = await User.create({
+                        azp: user.azp,
+                        sub: user.sub,
+                        hd: user.hd,
+                        email: user.email,
+                        email_verified: user.email_verified,
+                        name: user.name,
+                        picture: user.picture,
+                        locale: user.locale,
+                        iat: user.iat,
+                        exp: user.exp
+                    })
+                    res.json({
+                        success: true,
+                        message: "Authen added new one",
+                        token: genarate(newUser._id)
+                    })
+                } else {
+                    res.json({
+                        success: false,
+                        message: "Required sign at tdtu.edu.vn"
+                    })
+                }
+            } else {
+                res.json({
+                    success: true,
+                    message: "Authen added before",
+                    data: genarate(findUser._id)
+                })
+            }
+        } catch (error) {
+            res.json({
+                success: false,
+                message: "Fatal error"
+            })
+        }
+    },
+    validateToken: async (req, res) => {
+        try {
+            let user = jwt.verify(req.body.token, process.env.JWT)
+
+            if (user) {
+                res.json({
+                    success: true,
+                    message: "Validate success",
+                    data: req.body.token
+                })
+            } else {
+                res.json({
+                    success: false,
+                    message: "Token fail"
+                })
+            }
+        } catch (error) {
+            res.json({
+                success: false,
+                message: "Fatal error"
+            })
+        }
+    }
+}
+
+module.exports = indexController

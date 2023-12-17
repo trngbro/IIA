@@ -10,15 +10,48 @@ import './GoogleButton.css'
 const LoginComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
     const toast = useToast();
+    const history = useHistory();
 
     const handleLoginSuccess = async (credentialResponse) => {
-        const res = await axios.post('/test/login', JSON.stringify({ credentialResponse }), {
+        const res = await axios.post('/login', JSON.stringify({ credentialResponse }), {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
 
-        console.log(res);
+        if (res.data && res.data.success) {
+            toast({
+                title: res.data.message,
+                description: "Sign in",
+                status: 'success',
+                duration: 2000,
+                isClosable: true,
+            })
+
+            localStorage.setItem("userToken", JSON.stringify(res.data.data));
+
+            setInterval(function () {
+                history.push("/otherpage");
+            }, 1000)
+        } else {
+            if (!res.data.success && res.data.message) {
+                toast({
+                    title: res.data.message,
+                    description: "Please contact us",
+                    status: 'warning',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            } else {
+                toast({
+                    title: res.data.message,
+                    description: "Please contact us",
+                    status: 'error',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            }
+        }
     }
 
     return (

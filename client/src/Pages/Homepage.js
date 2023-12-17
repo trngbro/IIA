@@ -3,13 +3,25 @@ import { Container, Box, Text, Tabs, TabList, Tab, TabPanels, TabPanel } from '@
 import { useHistory } from "react-router-dom";
 import LoginComponent from '../Components/Authen/LoginComponent'
 import LicenseComponent from '../Components/Authen/LicenseComponent'
+import axios from 'axios';
 
 const Homepage = () => {
     const history = useHistory()
-    // useEffect(() => {
-    //     const user = localStorage.getItem("userInfoDataSaved");
-    //     user == null ? history.push() : history.push("/otherpage");
-    // })
+    useEffect(() => {
+        const refreshPage = async (token) => {
+            const res = await axios.post('/login/validate', JSON.stringify({ token }), {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            return res.data.success ? true : false
+        }
+        let user = localStorage.getItem("userToken");
+        if (user) {
+            refreshPage(user) ? history.push("/otherpage") : history.push("/logout");
+        }
+    })
     return (
 
         <Container maxW='xl' centerContent>

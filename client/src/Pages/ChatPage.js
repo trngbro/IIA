@@ -3,28 +3,27 @@ import '../Styles/chat.stylesheets.css'
 import '../Styles/chat.tailwind.css'
 import axios from 'axios'
 import ChatConversation from '../Components/ChatContent/ChatConversation.js'
-import './scripts.js'
+import './chatPageScripts.js'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min.js'
 
 const ChatPage = () => {
+    const history = useHistory()
     const [chats, setChats] = useState([])
     const [isChoose, setIsChoose] = useState(null)
+    const [isSelectAvatar, setSelectAvatar] = useState(false)
 
     const fetchChats = async () => {
-        const user = JSON.parse(localStorage.getItem("userInfoDataSaved"));
-        await axios.get(`/test/chatsData`, {
-            headers: {
-                'Authorization': `Basic ${user.token}`
-            },
-        }).then(res => {
-            setChats(res.data.data)
-        }).catch((err) => {
-            console.log(err)
-        })
+        const user = JSON.parse(localStorage.getItem("userToken"));
     }
 
     const handleClickToNav = async (chat) => {
         setIsChoose(chat.userId)
         console.log(chat)
+    }
+
+    const handleClickToLogout = async () => {
+        localStorage.clear();
+        history.push("/")
     }
 
     useEffect(() => {
@@ -44,13 +43,25 @@ const ChatPage = () => {
                             <li><a href="./otherpage" data-title="Contacts"><i className="ri-contacts-line"></i></a></li>
                             <li><a href="./otherpage" data-title="Documents"><i className="ri-folder-line"></i></a></li>
                             <li><a href="./otherpage" data-title="Settings"><i className="ri-settings-line"></i></a></li>
-                            <li className="chat-sidebar-profile">
-                                <button type="button" className="chat-sidebar-profile-toggle">
+                            <li
+                                className={isSelectAvatar ? "chat-sidebar-profile active" : "chat-sidebar-profile"}
+                                onMouseLeave={() => setSelectAvatar(false)}
+                            >
+                                <button
+                                    type="button"
+                                    className="chat-sidebar-profile-toggle"
+                                    onClick={() => setSelectAvatar(true)}
+                                >
                                     <img src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
                                 </button>
-                                <ul className="chat-sidebar-profile-dropdown">
-                                    <li><a href="./otherpage"><i className="ri-user-line"></i> Profile</a></li>
-                                    <li><a href="./otherpage"><i className="ri-logout-box-line"></i> Logout</a></li>
+                                <ul
+                                    className="chat-sidebar-profile-dropdown"
+
+                                >
+                                    <li><a href><i className="ri-user-line"></i> Profile</a></li>
+                                    <li
+                                        onClick={handleClickToLogout}
+                                    ><a href ><i className="ri-logout-box-line"></i> Logout</a></li>
                                 </ul>
                             </li>
                         </ul>
