@@ -35,29 +35,29 @@ const ChatPage = () => {
         history.push("/");
     };
 
-    useEffect(() => {
-        const refreshPage = async (token) => {
-            const res = await axios.post('/login/getContact', {}, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+    // useEffect(() => {
+    //     const refreshPage = async (token) => {
+    //         const res = await axios.post('/login/getContact', {}, {
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         });
 
-            return res.data
-        }
-        let user = localStorage.getItem("userToken");
-        if (user) {
-            let data = refreshPage(user)
-            if (data.success) {
-                setChats(data.data)
-            } else if (!data.success && !data.message === 'Not authorized') {
-                logoutAction()
-            }
-        } else {
-            logoutAction()
-        }
-    }, [])
+    //         return res.data
+    //     }
+    //     let user = localStorage.getItem("userToken");
+    //     if (user) {
+    //         let data = refreshPage(user)
+    //         if (data.success) {
+    //             setChats(data.data)
+    //         } else if (!data.success && !data.message === 'Not authorized') {
+    //             logoutAction()
+    //         }
+    //     } else {
+    //         logoutAction()
+    //     }
+    // }, [])
 
     return (
         <>
