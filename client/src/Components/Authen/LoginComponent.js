@@ -14,12 +14,13 @@ const LoginComponent = () => {
 
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
     const submitHandler = async () => {
         setLoading(true);
+        let res;
         if (!email || !password) {
             toast({
                 title: "Please Fill all the Feilds",
@@ -32,7 +33,11 @@ const LoginComponent = () => {
             return;
         } else {
             if (!email.includes('@')) {
-
+                res = await axios.post('/login/checking', JSON.stringify({ password, username: email }), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
             } else if (!email.endsWith("@student.tdtu.edu.vn")) {
                 setLoading(false)
                 toast({
@@ -42,32 +47,42 @@ const LoginComponent = () => {
                     isClosable: true,
                     position: "bottom",
                 });
+                setLoading(false);
                 return
             } else {
-
+                res = await axios.post('/login/checking', JSON.stringify({ password, email }), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
             }
         }
 
         try {
-            const config = {
-                headers: {
-                    "Content-type": "application/json",
-                },
-            };
+            setLoading(false);
+            if (res.data && res.data.success) {
+                toast({
+                    title: res.data.message,
+                    description: "Sign in",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
 
-            // const { data } = await axios.post(
-            //     "/api/user/login",
-            //     { email, password },
-            //     config
-            // );
+                localStorage.setItem("userToken", JSON.stringify(res.data.data));
 
-            toast({
-                title: "Login Successful",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "bottom",
-            });
+                setInterval(function () {
+                    history.push("/otherpage");
+                }, 1000)
+            } else {
+                toast({
+                    title: res.data.message,
+                    description: "Email or password are wrong",
+                    status: 'warning',
+                    duration: 9000,
+                    isClosable: true,
+                })
+            }
         } catch (error) {
             toast({
                 title: "Error Occured!",

@@ -49,6 +49,49 @@ const indexController = {
             })
         }
     }),
+    loginProcessing: asyncHandler(async (req, res) => {
+        try {
+            if (req.body.password) {
+                let findUser
+
+                if (req.body.email) {
+                    findUser = await User.findOne({ email: req.body.email })
+                } else if (req.body.username) {
+                    console.log(findUser)
+                    findUser = await User.findOne({ username: req.body.username })
+                    console.log(findUser)
+                } else {
+                    res.json({
+                        success: false,
+                        message: "Missing infomation for processing"
+                    })
+                }
+                console.log(true)
+                if (findUser && await findUser.passwordComparing(req.body.password)) {
+                    res.json({
+                        success: true,
+                        message: "Login success",
+                        data: findUser
+                    })
+                } else {
+                    res.json({
+                        success: false,
+                        message: "Login fail"
+                    })
+                }
+            } else {
+                res.json({
+                    success: false,
+                    message: "Missing infomation for processing"
+                })
+            }
+        } catch (error) {
+            res.json({
+                success: false,
+                message: "Fatal error"
+            })
+        }
+    }),
     validateToken: asyncHandler(async (req, res) => {
         try {
             let user = jwt.verify(req.body.token, process.env.JWT)
