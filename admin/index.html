@@ -11,23 +11,23 @@
     <title>TDTU Chatbot</title>
 
     <!-- Bootstrap -->
-    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="./vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
-    <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+    <link href="./vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 	
     <!-- bootstrap-progressbar -->
-    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+    <link href="./vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
     <!-- JQVMap -->
-    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+    <link href="./vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
     <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="./vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="./build/css/custom.min.css" rel="stylesheet">
   </head>
 
   <body class="nav-md">
@@ -36,7 +36,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><img id="logo" src="../build/images/logo_tdtu.png"> <span>TDTU Chatbot</span></a>
+              <a href="index.html" class="site_title"><img id="logo" src="./build/images/logo_tdtu.png"> <span>TDTU Chatbot</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -62,32 +62,36 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-comment"></i> Chatbot <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="form_upload.html">Upload Information</a></li>
-                      <li><a href="#">Dashboard2</a></li>
-                      <li><a href="#">Dashboard3</a></li>
+                      <li><a href="form_upload.html">Upload document</a></li>
+                      <li><a href="document.html">Document</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-user"></i> Student  <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">General Form</a></li>
-                      <li><a href="#">Advanced Components</a></li>
-                      <li><a href="#">Form Validation</a></li>
+                      <li><a href="student_list.html">Student list</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-user"></i> Staff  <span class="fa fa-chevron-down"></span></a>
+                  <!-- <li><a><i class="fa fa-user"></i> Staff  <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="#">General Elements</a></li>
                       <li><a href="#">Media Gallery</a></li>
                       <li><a href="#">Typography</a></li>
                       <li><a href="#">Icons</a></li>
                     </ul>
-                  </li>
+                  </li> -->
                   <li><a><i class="fa fa-home"></i></i> Department <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="#">Tables</a></li>
-                      <li><a href="#">Table Dynamic</a></li>
+                      <li><a href="department_list.html">Department list</a></li>
+                      <li><a href="staff_list.html">Staff</a></li>
+                      <li><a href="add_staff.html">Add staff</a></li>
                     </ul>
                   </li>   
+                  <li><a><i class="fa fa-bar-chart-o"></i>Report <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="#">App logs</a></li>
+                      <li><a href="#">Make a report</a></li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
 
@@ -503,45 +507,45 @@
     </div>
 
     <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
+    <script src="./vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- FastClick -->
-    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <script src="./vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
+    <script src="./vendors/nprogress/nprogress.js"></script>
     <!-- Chart.js -->
-    <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+    <script src="./vendors/Chart.js/dist/Chart.min.js"></script>
     <!-- gauge.js -->
-    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+    <script src="./vendors/gauge.js/dist/gauge.min.js"></script>
     <!-- bootstrap-progressbar -->
-    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+    <script src="./vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
-    <script src="../vendors/iCheck/icheck.min.js"></script>
+    <script src="./vendors/iCheck/icheck.min.js"></script>
     <!-- Skycons -->
-    <script src="../vendors/skycons/skycons.js"></script>
+    <script src="./vendors/skycons/skycons.js"></script>
     <!-- Flot -->
-    <script src="../vendors/Flot/jquery.flot.js"></script>
-    <script src="../vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="../vendors/Flot/jquery.flot.time.js"></script>
-    <script src="../vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+    <script src="./vendors/Flot/jquery.flot.js"></script>
+    <script src="./vendors/Flot/jquery.flot.pie.js"></script>
+    <script src="./vendors/Flot/jquery.flot.time.js"></script>
+    <script src="./vendors/Flot/jquery.flot.stack.js"></script>
+    <script src="./vendors/Flot/jquery.flot.resize.js"></script>
     <!-- Flot plugins -->
-    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+    <script src="./vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="./vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="./vendors/flot.curvedlines/curvedLines.js"></script>
     <!-- DateJS -->
-    <script src="../vendors/DateJS/build/date.js"></script>
+    <script src="./vendors/DateJS/build/date.js"></script>
     <!-- JQVMap -->
-    <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+    <script src="./vendors/jqvmap/dist/jquery.vmap.js"></script>
+    <script src="./vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+    <script src="./vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
     <!-- bootstrap-daterangepicker -->
-    <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="./vendors/moment/min/moment.min.js"></script>
+    <script src="./vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <script src="./build/js/custom.min.js"></script>
 	
   </body>
 </html>
