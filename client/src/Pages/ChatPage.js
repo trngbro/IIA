@@ -6,6 +6,9 @@ import ChatConversation from '../Components/ChatContent/ChatConversation.js'
 import './chatPageScripts.js'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min.js'
 import { useToast } from '@chakra-ui/react'
+import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from "../store/index.js"
+import { bindActionCreators } from 'redux';
 
 const ChatPage = () => {
     const history = useHistory()
@@ -14,64 +17,49 @@ const ChatPage = () => {
     const [isChoose, setIsChoose] = useState(null)
     const [isSelectAvatar, setSelectAvatar] = useState(false)
 
+    const state = useSelector((state) => state.account)
+    const dispatch = useDispatch()
+    const { loginSaved, logoutSaved } = bindActionCreators(ActionCreators, dispatch)
+
+    useEffect(() => {
+        if (Object.keys(state).length === 0) {
+            history.push("/");
+            return
+        }
+    })
+
     const handleClickToNav = async (chat) => {
         setIsChoose(chat.userId)
-        console.log(chat)
     }
 
     const handleClickToLogout = () => {
-        logoutAction()
-    }
-
-    const logoutAction = () => {
-        localStorage.removeItem("userToken");
+        logoutSaved()
         toast({
-            title: "Token broken",
+            title: "Logout yet",
             description: "Sign in again",
             status: 'error',
             duration: 3000,
             isClosable: true,
         })
+
         history.push("/");
-    };
 
-    // useEffect(() => {
-    //     const refreshPage = async (token) => {
-    //         const res = await axios.post('/login/getContact', {}, {
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${token}`
-    //             }
-    //         });
-
-    //         return res.data
-    //     }
-    //     let user = localStorage.getItem("userToken");
-    //     if (user) {
-    //         let data = refreshPage(user)
-    //         if (data.success) {
-    //             setChats(data.data)
-    //         } else if (!data.success && !data.message === 'Not authorized') {
-    //             logoutAction()
-    //         }
-    //     } else {
-    //         logoutAction()
-    //     }
-    // }, [])
+        return;
+    }
 
     return (
         <>
             <section className="chat-section">
                 <div className="chat-container">
                     <aside className="chat-sidebar">
-                        <a href="./otherpage" className="chat-sidebar-logo">
+                        <a href className="chat-sidebar-logo">
                             <i className="ri-chat-1-fill"></i>
                         </a>
                         <ul className="chat-sidebar-menu">
-                            <li className="active"><a href="./otherpage" data-title="Chats"><i className="ri-chat-3-line"></i></a></li>
-                            <li><a href="./otherpage" data-title="Contacts"><i className="ri-contacts-line"></i></a></li>
-                            <li><a href="./otherpage" data-title="Documents"><i className="ri-folder-line"></i></a></li>
-                            <li><a href="./otherpage" data-title="Settings"><i className="ri-settings-line"></i></a></li>
+                            <li className="active"><a href data-title="Chats"><i className="ri-chat-3-line"></i></a></li>
+                            <li><a href data-title="Contacts"><i className="ri-contacts-line"></i></a></li>
+                            <li><a href data-title="Documents"><i className="ri-folder-line"></i></a></li>
+                            <li><a href data-title="Settings"><i className="ri-settings-line"></i></a></li>
                             <li
                                 className={isSelectAvatar ? "chat-sidebar-profile active" : "chat-sidebar-profile"}
                                 onMouseLeave={() => setSelectAvatar(false)}
@@ -89,7 +77,7 @@ const ChatPage = () => {
                                 >
                                     <li><a href><i className="ri-user-line"></i> Profile</a></li>
                                     <li
-                                        onClick={handleClickToLogout}
+                                        onClick={() => handleClickToLogout()}
                                     ><a href ><i className="ri-logout-box-line"></i> Logout</a></li>
                                 </ul>
                             </li>

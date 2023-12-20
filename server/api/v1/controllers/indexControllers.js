@@ -71,7 +71,7 @@ const indexController = {
                     res.json({
                         success: true,
                         message: "Login success",
-                        data: findUser
+                        data: genarate(findUser._id)
                     })
                 } else {
                     res.json({

@@ -4,8 +4,10 @@ import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from "axios";
 import ggicon from "./google_icon.png"
 import { useToast } from "@chakra-ui/react";
-import Link, { useHistory } from "react-router-dom";
-import './GoogleButton.css'
+import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from "../../store/index"
+import { bindActionCreators } from 'redux';
 
 const LoginComponent = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +19,10 @@ const LoginComponent = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+
+    const state = useSelector((state) => state.account)
+    const dispatch = useDispatch()
+    const { loginSaved } = bindActionCreators(ActionCreators, dispatch)
 
     const submitHandler = async () => {
         setLoading(true);
@@ -69,11 +75,12 @@ const LoginComponent = () => {
                     isClosable: true,
                 })
 
-                localStorage.setItem("userToken", JSON.stringify(res.data.data));
+                console.log(res.data.data);
 
-                setInterval(function () {
-                    history.push("/otherpage");
-                }, 1000)
+                loginSaved(res.data.data)
+
+                history.push("/otherpage");
+                return
             } else {
                 toast({
                     title: res.data.message,
@@ -82,17 +89,19 @@ const LoginComponent = () => {
                     duration: 9000,
                     isClosable: true,
                 })
+                return
             }
         } catch (error) {
             toast({
                 title: "Error Occured!",
-                description: error.response.data.message,
+                description: error.data,
                 status: "error",
                 duration: 5000,
                 isClosable: true,
                 position: "bottom",
             });
             setLoading(false);
+            return
         }
     }
 
@@ -112,11 +121,10 @@ const LoginComponent = () => {
                 isClosable: true,
             })
 
-            localStorage.setItem("userToken", JSON.stringify(res.data.data));
+            loginSaved(res.data.data);
 
-            setInterval(function () {
-                history.push("/otherpage");
-            }, 1000)
+            console.log("sdsaksnakdns")
+            history.push("/otherpage");
         } else {
             if (!res.data.success && res.data.message) {
                 toast({

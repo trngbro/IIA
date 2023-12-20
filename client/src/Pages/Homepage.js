@@ -3,41 +3,23 @@ import { Container, Box, Text, Tabs, TabList, Tab, TabPanels, TabPanel, useToast
 import { useHistory } from "react-router-dom";
 import LoginComponent from '../Components/Authen/LoginComponent'
 import LicenseComponent from '../Components/Authen/LicenseComponent'
+import { useDispatch, useSelector } from 'react-redux';
+import { ActionCreators } from "../store/index"
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 
 const Homepage = () => {
     const history = useHistory()
-    const toast = useToast();
 
-    const logoutAction = () => {
-        localStorage.removeItem("userToken");
-        toast({
-            title: "Token broken",
-            description: "Sign in again",
-            status: 'error',
-            duration: 3000,
-            isClosable: true,
-        })
-        setInterval(() => {
-            history.push("/");
-        }, 1000);
-    };
+    const state = useSelector((state) => state.account)
 
     useEffect(() => {
-        const refreshPage = async (token) => {
-            const res = await axios.post('/login/validate', JSON.stringify({ token }), {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            return res.data.success ? true : false
-        }
-        let user = localStorage.getItem("userToken");
-        if (user) {
-            refreshPage(user) ? history.push("/otherpage") : logoutAction();
+        if (Object.keys(state).length !== 0) {
+            history.push("/otherpage");
+            return
         }
     })
+
     return (
 
         <Container maxW='xl' centerContent>
