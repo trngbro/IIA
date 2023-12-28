@@ -13,7 +13,7 @@ const checking = (req, res, next) => {
 }
 
 router.post('/login', fakeController.loginChecking);
-router.get('/chatsData', checking, fakeController.getChatsData);
+router.get('/chatsData', fakeController.getChatsData);
 router.get('/chatData4Box', checking, fakeController.getData4Box);
 
 module.exports = router;

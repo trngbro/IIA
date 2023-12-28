@@ -1,4 +1,5 @@
 const { jwtDecode } = require('jwt-decode')
+const { fullCSS, fullJS } = require("../../v1/configs/assets.config")
 
 const userController = {
     loginChecking: (req, res) => {
@@ -7,7 +8,9 @@ const userController = {
     },
 
     getChatsData: (req, res) => {
+        console.log(fullCSS())
         let data = {
+            hello: "Test meno",
             success: true,
             data: [
                 { "userId": 'a', 'name': 'Someone', 'faculty': 'Tổ học phí' },
@@ -16,7 +19,9 @@ const userController = {
                 { "userId": 'd', 'name': 'Someone', 'faculty': 'Phòng thanh tra pháp chế' },
                 { "userId": 'e', 'name': 'Someone', 'faculty': 'Văn phòng Khoa công nghệ thông tin' },
                 { "userId": 'f', 'name': 'Someone', 'faculty': 'Văn phòng Đoàn hội' }
-            ]
+            ],
+            memo: fullCSS() || "No data exist",
+            meno2: fullJS() || "No data exist"
         }
 
         res.send(data)

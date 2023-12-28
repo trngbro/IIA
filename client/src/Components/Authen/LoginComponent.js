@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Text, Image, VStack, InputRightElement, FormControl, FormLabel, InputGroup, Input } from '@chakra-ui/react'
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from "axios";
 import ggicon from "./google_icon.png"
 import { useToast } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { ActionCreators } from "../../store/index"
 import { bindActionCreators } from 'redux';
 
@@ -20,7 +20,6 @@ const LoginComponent = () => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const state = useSelector((state) => state.account)
     const dispatch = useDispatch()
     const { loginSaved } = bindActionCreators(ActionCreators, dispatch)
 

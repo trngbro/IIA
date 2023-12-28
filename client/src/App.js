@@ -3,6 +3,7 @@ import axios from "axios";
 import { Route } from 'react-router-dom';
 import Homepage from './Pages/Homepage';
 import ChatPage from './Pages/ChatPage';
+import AdminPage from "./Pages/AdminPage";
 
 
 function App() {
@@ -14,6 +15,10 @@ function App() {
 
       <Route
         path="/otherpage" component={ChatPage} exact
+      />
+
+      <Route
+        path="/admin" component={AdminPage} exact
       />
     </div>
   );

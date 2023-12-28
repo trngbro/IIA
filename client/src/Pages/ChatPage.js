@@ -3,7 +3,7 @@ import '../Styles/chat.stylesheets.css'
 import '../Styles/chat.tailwind.css'
 import axios from 'axios'
 import ChatConversation from '../Components/ChatContent/ChatConversation.js'
-import './chatPageScripts.js'
+import './scripts/chatPageScript.js'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min.js'
 import { useToast } from '@chakra-ui/react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +19,7 @@ const ChatPage = () => {
 
     const state = useSelector((state) => state.account)
     const dispatch = useDispatch()
-    const { loginSaved, logoutSaved } = bindActionCreators(ActionCreators, dispatch)
+    const { logoutSaved } = bindActionCreators(ActionCreators, dispatch)
 
     useEffect(() => {
         if (Object.keys(state).length === 0) {
