@@ -3,7 +3,6 @@ const { fullCSS, fullJS } = require("../../v1/configs/assets.config")
 
 const userController = {
     loginChecking: (req, res) => {
-        console.log(jwtDecode(req.body.credentialResponse.credential))
         res.send("OKKKKK")
     },
 

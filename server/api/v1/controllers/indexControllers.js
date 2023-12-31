@@ -57,17 +57,23 @@ const indexController = {
                 if (req.body.email) {
                     findUser = await User.findOne({ email: req.body.email })
                 } else if (req.body.username) {
-                    console.log(findUser)
                     findUser = await User.findOne({ username: req.body.username })
-                    console.log(findUser)
                 } else {
                     res.json({
                         success: false,
                         message: "Missing infomation for processing"
                     })
                 }
-                console.log(true)
-                if (findUser && await findUser.passwordComparing(req.body.password)) {
+                if (findUser.hd === "iia.tdtu.edu.vn") {
+                    res.json({
+                        success: true,
+                        message: "Login with admin permission",
+                        admin: true,
+                        data: {
+                            url: `${process.env.SERVER_URL}admin`
+                        }
+                    })
+                } else if (findUser && await findUser.passwordComparing(req.body.password)) {
                     res.json({
                         success: true,
                         message: "Login success",

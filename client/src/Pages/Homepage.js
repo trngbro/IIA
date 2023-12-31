@@ -15,7 +15,7 @@ const Homepage = () => {
 
     useEffect(() => {
         if (Object.keys(state).length !== 0) {
-            history.push("/otherpage");
+            history.push("/chats");
             return
         }
     })

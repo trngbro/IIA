@@ -62,8 +62,8 @@ const ChatConversation = (props) => {
                                                                 <div className="conversation-item-dropdown">
                                                                     <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                                                     <ul className="conversation-item-dropdown-list">
-                                                                        <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                                        <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                                                        <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                                                        <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                                                     </ul>
                                                                 </div>
                                                             </div>
@@ -80,8 +80,8 @@ const ChatConversation = (props) => {
                                                     <div className="conversation-item-dropdown">
                                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                                         <ul className="conversation-item-dropdown-list">
-                                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -95,8 +95,8 @@ const ChatConversation = (props) => {
                                                     <div className="conversation-item-dropdown">
                                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                                         <ul className="conversation-item-dropdown-list">
-                                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -122,8 +122,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -137,8 +137,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -159,8 +159,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -174,8 +174,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -189,8 +189,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -211,8 +211,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -226,8 +226,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -241,8 +241,8 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-dropdown">
                                         <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
                                         <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./otherpage"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./otherpage"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
                                         </ul>
                                     </div>
                                 </div>

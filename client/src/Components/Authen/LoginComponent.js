@@ -54,7 +54,8 @@ const LoginComponent = () => {
                 });
                 setLoading(false);
                 return
-            } else {
+            }
+            else {
                 res = await axios.post('/login/checking', JSON.stringify({ password, email }), {
                     headers: {
                         'Content-Type': 'application/json'
@@ -65,7 +66,7 @@ const LoginComponent = () => {
 
         try {
             setLoading(false);
-            if (res.data && res.data.success) {
+            if (res.data && res.data.success && res.data.data.url) {
                 toast({
                     title: res.data.message,
                     description: "Sign in",
@@ -74,11 +75,26 @@ const LoginComponent = () => {
                     isClosable: true,
                 })
 
-                console.log(res.data.data);
+                loginSaved(res.data.data)
+
+                console.log(res.data.data.url);
+
+                window.location.href = (res.data.data.url);
+                return
+            } else if (res.data && res.data.success) {
+                toast({
+                    title: res.data.message,
+                    description: "Sign in",
+                    status: 'success',
+                    duration: 2000,
+                    isClosable: true,
+                })
 
                 loginSaved(res.data.data)
 
-                history.push("/otherpage");
+                console.log("Da vao day");
+
+                history.push("/chats");
                 return
             } else {
                 toast({
@@ -122,8 +138,7 @@ const LoginComponent = () => {
 
             loginSaved(res.data.data);
 
-            console.log("sdsaksnakdns")
-            history.push("/otherpage");
+            history.push("/chats");
         } else {
             if (!res.data.success && res.data.message) {
                 toast({
