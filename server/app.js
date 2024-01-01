@@ -16,6 +16,11 @@ const indexRouter = require('./routes/indexRoutes');
 app.use("/login", indexRouter)
 
 
+const chatRouter = require('./routes/chatRoutes')
+
+app.use("/api/chat", chatRouter)
+
+
 //server routing
 const adminRouter = require("./routes/adminRoutes")
 
