@@ -21,6 +21,11 @@ const chatRouter = require('./routes/chatRoutes')
 app.use("/api/chat", chatRouter)
 
 
+const messageRouter = require("./routes/messageRoutes")
+
+app.use("/api/message", messageRouter)
+
+
 //server routing
 const adminRouter = require("./routes/adminRoutes")
 
