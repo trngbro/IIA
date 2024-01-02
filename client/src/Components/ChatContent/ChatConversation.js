@@ -6,16 +6,26 @@ const ChatConversation = (props) => {
     const [chats, setChats] = useState([])
     const history = useHistory()
 
-    const { userId } = props;
+    const { chatInfo, token } = props;
+
+    console.log(">>>Chat data:", chatInfo)
 
     useEffect(() => {
         const fetchChats = async () => {
+            const res = await axios.get(`/api/message/${chatInfo._id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log(res.data)
 
+            setChats(res.data.data)
         }
 
         fetchChats()
 
-    }, [userId])
+    }, [])
 
     return (
         <div className="conversation active" id="a">
@@ -24,7 +34,7 @@ const ChatConversation = (props) => {
                 <div className="conversation-user">
                     <img className="conversation-user-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
                     <div>
-                        <div className="conversation-user-name">Someone</div>
+                        <div className="conversation-user-name">{chatInfo.name}</div>
                         <div className="conversation-user-status online">online</div>
                     </div>
                 </div>
@@ -39,216 +49,33 @@ const ChatConversation = (props) => {
                     {
                         chats && chats.length > 0 &&
                         chats.map((chat, index) => {
-                            if (chat.break) {
-                                return (
-                                    <div key={index} className="coversation-divider"><span>{chat.data}</span></div>
-                                )
-                            } else {
-                                return (
-                                    <li key={index} className={chat.from === "me" ? "conversation-item me" : "conversation-item"}>
-                                        <div className="conversation-item-side">
-                                            <img className="conversation-item-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                        </div>
-                                        <div className="conversation-item-content">
-                                            {
-                                                chat.messages.map(element => {
-                                                    return (
-                                                        <div className="conversation-item-wrapper">
-                                                            <div className="conversation-item-box">
-                                                                <div className="conversation-item-text">
-                                                                    <p>{element.message ? element.message : ""}</p>
-                                                                    <div className="conversation-item-time">12:30</div>
-                                                                </div>
-                                                                <div className="conversation-item-dropdown">
-                                                                    <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                                                    <ul className="conversation-item-dropdown-list">
-                                                                        <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                                        <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })
-                                            }
-                                            <div className="conversation-item-wrapper">
-                                                <div className="conversation-item-box">
-                                                    <div className="conversation-item-text">
-                                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet natus repudiandae quisquam sequi nobis suscipit consequatur rerum alias odio repellat!</p>
-                                                        <div className="conversation-item-time">12:30</div>
-                                                    </div>
-                                                    <div className="conversation-item-dropdown">
-                                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                                        <ul className="conversation-item-dropdown-list">
-                                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                                        </ul>
-                                                    </div>
+                            return (
+                                <li key={index} className={chat.sender ? "conversation-item me" : "conversation-item"}>
+                                    <div className="conversation-item-side">
+                                        <img className="conversation-item-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
+                                    </div>
+                                    <div className="conversation-item-content">
+                                        <div className="conversation-item-wrapper">
+                                            <div className="conversation-item-box">
+                                                <div className="conversation-item-text">
+                                                    <p>{chat.content ? chat.content : ""}</p>
+                                                    <div className="conversation-item-time">{chat.createdAt}</div>
                                                 </div>
-                                            </div>
-                                            <div className="conversation-item-wrapper">
-                                                <div className="conversation-item-box">
-                                                    <div className="conversation-item-text">
-                                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, tenetur!</p>
-                                                        <div className="conversation-item-time">12:30</div>
-                                                    </div>
-                                                    <div className="conversation-item-dropdown">
-                                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                                        <ul className="conversation-item-dropdown-list">
-                                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                                        </ul>
-                                                    </div>
+                                                <div className="conversation-item-dropdown">
+                                                    <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
+                                                    <ul className="conversation-item-dropdown-list">
+                                                        <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                                        <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
-                                )
-                            }
+                                    </div>
+                                </li>
+                            )
                         })
                     }
-                    <div className="coversation-divider"><span>Today</span></div>
-                    <li className="conversation-item me">
-                        <div className="conversation-item-side">
-                            <img className="conversation-item-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                        </div>
-                        <div className="conversation-item-content">
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Amet natus repudiandae quisquam sequi nobis suscipit consequatur rerum alias odio repellat!</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, tenetur!</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li className="conversation-item">
-                        <div className="conversation-item-side">
-                            <img className="conversation-item-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                        </div>
-                        <div className="conversation-item-content">
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque eos ab in?</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint, debitis. Iste natus est aliquam ipsum doloremque fugiat, quidem eos autem? Dolor quisquam laboriosam enim cum laborum suscipit perferendis adipisci praesentium.</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li className="conversation-item me">
-                        <div className="conversation-item-side">
-                            <img className="conversation-item-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                        </div>
-                        <div className="conversation-item-content">
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas, eos, magni temporibus, placeat consectetur nobis incidunt dicta a culpa vel esse. Facilis fugiat possimus eveniet accusamus dignissimos pariatur inventore animi rem vero, eligendi obcaecati fugit quaerat? Officia ex quod eaque maxime ipsam, tempore error laboriosam laborum, magnam ipsum doloremque quas.</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Temporibus debitis odio maiores perferendis ipsa repudiandae amet blanditiis quod. Ullam, dolorum.</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="conversation-item-wrapper">
-                                <div className="conversation-item-box">
-                                    <div className="conversation-item-text">
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Accusantium blanditiis ea, voluptatum, eveniet at harum minima maxime enim aut non, iure expedita excepturi tempore nostrum quasi natus voluptas dolore ducimus!</p>
-                                        <div className="conversation-item-time">12:30</div>
-                                    </div>
-                                    <div className="conversation-item-dropdown">
-                                        <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                        <ul className="conversation-item-dropdown-list">
-                                            <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                            <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+
                 </ul>
             </div>
             <div className="conversation-form">

@@ -5,6 +5,8 @@ const User = require('../models/User')
 const protect = asyncHandler(async (req, res, next) => {
     let token;
 
+    console.log(req.headers.authorization);
+
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         try {
             token = req.headers.authorization.split(" ")[1]
@@ -38,4 +40,4 @@ const protect = asyncHandler(async (req, res, next) => {
     }
 })
 
-module.exports = { protect }
+module.exports = protect 

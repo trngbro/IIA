@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const genarate = require("../configs/token.config")
 const User = require("../models/User")
+const autoFirstTime = require("../helpers/autoFirstTime")
 
 const indexController = {
     loginChecking: asyncHandler(async (req, res) => {
@@ -24,8 +25,10 @@ const indexController = {
                         iat: user.iat,
                         exp: user.exp
                     })
+                    autoFirstTime(newUser._id)
                     res.json({
                         success: true,
+                        user: { ...findUser },
                         message: "Authen added new one",
                         token: genarate(newUser._id)
                     })
@@ -38,6 +41,7 @@ const indexController = {
             } else {
                 res.json({
                     success: true,
+                    user: { ...findUser },
                     message: "Authen added before",
                     data: genarate(findUser._id)
                 })
@@ -76,6 +80,7 @@ const indexController = {
                 } else if (findUser && await findUser.passwordComparing(req.body.password)) {
                     res.json({
                         success: true,
+                        user: { ...findUser },
                         message: "Login success",
                         data: genarate(findUser._id)
                     })

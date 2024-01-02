@@ -11,13 +11,18 @@ import axios from 'axios';
 const Homepage = () => {
     const history = useHistory()
 
-    const state = useSelector((state) => state.account)
+    const state = useSelector((state) => state)
 
     useEffect(() => {
-        if (Object.keys(state).length !== 0) {
+        if (state.account.token) {
+            console.log("da vao day roi xu ly di")
             history.push("/chats");
             return
         }
+        // if (Object.keys(state).length !== 0) {
+        //     history.push("/chats");
+        //     return
+        // }
     })
 
     return (

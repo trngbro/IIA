@@ -9,7 +9,7 @@ const test = (req, res, next) => {
     next();
 }
 
-router.post('/', test, messageControllers.sendMessage)
-router.get('/:chatId', test, messageControllers.lazyLoadingMessages)
+router.post('/', protect, messageControllers.sendMessage)
+router.get('/:chatId', protect, messageControllers.lazyLoadingMessages)
 
 module.exports = router

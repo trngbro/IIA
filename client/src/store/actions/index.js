@@ -14,3 +14,12 @@ export const loginSaved = (user) => {
         })
     }
 }
+
+export const infoSaved = (user) => {
+    return (dispatch) => {
+        dispatch({
+            type: "INFO_UPDATED",
+            payload: user
+        })
+    }
+}

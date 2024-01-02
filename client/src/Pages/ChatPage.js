@@ -7,8 +7,9 @@ import './scripts/chatPageScript.js'
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min.js'
 import { useToast } from '@chakra-ui/react'
 import { useDispatch, useSelector } from 'react-redux';
-import { ActionCreators } from "../store/index.js"
+import { ActionCreators } from "../store/index.js";
 import { bindActionCreators } from 'redux';
+import { getOtherUser } from '../Logic/userLogics.js'
 
 const ChatPage = () => {
     const history = useHistory()
@@ -16,20 +17,54 @@ const ChatPage = () => {
     const [chats, setChats] = useState([])
     const [isChoose, setIsChoose] = useState(null)
     const [isSelectAvatar, setSelectAvatar] = useState(false)
+    const [searchValue, setSearchValue] = useState("")
 
     const state = useSelector((state) => state.account)
+
+    const chatBotInfo = {
+        name: "Meow",
+        picture: "http://localhost:3000/favicon.ico",
+        content: "Trợ lý học đường"
+    }
+
     const dispatch = useDispatch()
     const { logoutSaved } = bindActionCreators(ActionCreators, dispatch)
 
     useEffect(() => {
-        if (Object.keys(state).length === 0) {
+        if (!state.token) {
             history.push("/");
             return
+        } else {
+            fetchUserChatData(searchValue)
+            return
         }
-    })
+    }, [])
+
+    const fetchUserChatData = async (searchValue) => {
+        console.log(state.token);
+        const res = await axios.get('/api/chat', {
+            headers: {
+                'Authorization': `Bearer ${state.token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if (res && res.data && res.data.success) {
+            setChats(res.data.data)
+            console.log(chats)
+            return
+        } else {
+
+        }
+
+    }
+
+    const handleClickToSearchButton = () => {
+        console.log("clicked");
+        fetchUserChatData(searchValue)
+    }
 
     const handleClickToNav = async (chat) => {
-        setIsChoose(chat.userId)
+        setIsChoose(chat)
     }
 
     const handleClickToLogout = () => {
@@ -69,7 +104,7 @@ const ChatPage = () => {
                                     className="chat-sidebar-profile-toggle"
                                     onClick={() => setSelectAvatar(true)}
                                 >
-                                    <img src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
+                                    <img src={state.info._doc.picture} alt="" />
                                 </button>
                                 <ul
                                     className="chat-sidebar-profile-dropdown"
@@ -87,25 +122,49 @@ const ChatPage = () => {
                         <div className="content-sidebar">
                             <div className="content-sidebar-title">Chats</div>
                             <form action="" className="content-sidebar-form">
-                                <input type="search" className="content-sidebar-input" placeholder="Search..." />
-                                <button type="submit" className="content-sidebar-submit"><i className="ri-search-line"></i></button>
+                                <input type="search" className="content-sidebar-input" placeholder="Search..."
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                />
+                                <button type="button" className="content-sidebar-submit"
+                                    onClick={() => handleClickToSearchButton()}
+                                ><i className="ri-search-line"></i></button>
                             </form>
                             <div className="content-messages">
                                 <ul className="content-messages-list">
                                     <li className="content-message-title"><span>BOT</span></li>
-                                    <li>
-                                        <div data-conversation="#conversation-1">
-                                            <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
-                                            <span className="content-message-info">
-                                                <span className="content-message-name">Meow</span>
-                                                <span className="content-message-text">Lorem ipsum dolor sit amet consectetur.</span>
-                                            </span>
-                                            <span className="content-message-more">
-                                                <span className="content-message-unread">5</span>
-                                                <span className="content-message-time">12:30</span>
-                                            </span>
-                                        </div>
-                                    </li>
+                                    {
+                                        chats && chats.length > 0 &&
+
+                                        chats.map((chat, index) => {
+                                            let time = ''
+                                            console.log(chat);
+                                            if (chat.latestMessage) {
+                                                time = new Date(chat.latestMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                                            }
+                                            if (chat.users.length !== 1) {
+                                                return <></>
+                                            }
+                                            return (
+                                                <li
+                                                    key={chat._id}
+                                                    onClick={() => handleClickToNav(chat)}
+                                                >
+                                                    <div data-conversation={chat._id}>
+                                                        <img className="content-message-image" src={chatBotInfo.picture} alt="" />
+                                                        <span className="content-message-info">
+                                                            <span className="content-message-name">{chatBotInfo.name}</span>
+                                                            <span className="content-message-text">{chatBotInfo.content}</span>
+                                                        </span>
+                                                        <span className="content-message-more">
+                                                            {/* <span className="content-message-unread">new</span> */}
+                                                            <span className="content-message-time">{time}</span>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            )
+                                        })
+                                    }
                                 </ul>
                                 <ul className="content-messages-list">
                                     <li className="content-message-title"><span>Recently</span></li>
@@ -113,20 +172,30 @@ const ChatPage = () => {
                                         chats && chats.length > 0 &&
 
                                         chats.map((chat, index) => {
+                                            let user = getOtherUser(chat.users, state.info._doc)
+                                            let content = "Saysomething"
+                                            let time = ''
+                                            if (chat.latestMessage) {
+                                                time = new Date(chat.latestMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+                                                content = chat.latestMessage.content
+                                            }
+                                            if (chat.users.length === 1) {
+                                                return <></>
+                                            }
                                             return (
                                                 <li
-                                                    key={chat.userId}
-                                                    onClick={() => handleClickToNav(chat)}
+                                                    key={chat._id}
+                                                    onClick={() => setIsChoose(chat)}
                                                 >
-                                                    <div data-conversation={chat.userId}>
-                                                        <img className="content-message-image" src="https://upload.wikimedia.org/wikipedia/vi/1/1b/T%C4%90T_logo.png" alt="" />
+                                                    <div data-conversation={chat._id}>
+                                                        <img className="content-message-image" src={user.picture} alt="" />
                                                         <span className="content-message-info">
-                                                            <span className="content-message-name">{chat.name}</span>
-                                                            <span className="content-message-text">{chat.faculty}</span>
+                                                            <span className="content-message-name">{user.name}</span>
+                                                            <span className="content-message-text">{content}</span>
                                                         </span>
                                                         <span className="content-message-more">
-                                                            <span className="content-message-unread">5</span>
-                                                            <span className="content-message-time">12:30</span>
+                                                            {/* <span className="content-message-unread">new</span> */}
+                                                            <span className="content-message-time">{time}</span>
                                                         </span>
                                                     </div>
                                                 </li>
@@ -144,7 +213,8 @@ const ChatPage = () => {
                                 </div>
                                 :
                                 <ChatConversation
-                                    userId={isChoose}
+                                    chatInfo={isChoose}
+                                    token={state.token}
                                 />
                         }
                     </div>

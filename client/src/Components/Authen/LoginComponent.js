@@ -75,7 +75,7 @@ const LoginComponent = () => {
                     isClosable: true,
                 })
 
-                loginSaved(res.data.data)
+                loginSaved(res.data)
 
                 console.log(res.data.data.url);
 
@@ -90,9 +90,9 @@ const LoginComponent = () => {
                     isClosable: true,
                 })
 
-                loginSaved(res.data.data)
+                loginSaved(res.data)
 
-                console.log("Da vao day");
+                console.log(res.data)
 
                 history.push("/chats");
                 return
@@ -136,9 +136,11 @@ const LoginComponent = () => {
                 isClosable: true,
             })
 
-            loginSaved(res.data.data);
+            loginSaved(res.data)
 
             history.push("/chats");
+            return
+
         } else {
             if (!res.data.success && res.data.message) {
                 toast({

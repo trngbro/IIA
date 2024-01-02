@@ -1,4 +1,16 @@
-const init = (localStorage.getItem("userToken") === null) ? {} : JSON.parse(localStorage.getItem("userToken"))
+const init = (localStorage.getItem("userToken") === null) ? {
+    info: {
+        _doc: {
+            picture: ""
+        }
+    },
+    token: null
+} : {
+    info: JSON.parse(localStorage.getItem("userToken")).user,
+    token: JSON.parse(localStorage.getItem("userToken")).data
+}
+
+
 
 const reducer = (state = init, action) => {
     switch (action.type) {
@@ -8,8 +20,11 @@ const reducer = (state = init, action) => {
             return {}
         case "USER_LOGIN":
             localStorage.setItem("userToken", JSON.stringify(action.payload));
+
+            console.log(action.payload)
             return {
-                ...action.payload
+                info: action.payload.user,
+                token: action.payload.data
             }
         default:
             return state
