@@ -14,11 +14,10 @@ const messageControllers = {
             const messages = await Message.find({ chat: req.params.chatId })
                 .populate("sender", "name picture email")
                 .populate("chat")
-                .sort({ created: 1 })
-                .skip(req.body.counter || 0)
-                .limit(20)
+                .sort({ createdAt: -1 })
+                .limit(req.params.counter + 20)
 
-            if (messages.length === 0) {
+            if (messages.length === req.params.counter) {
                 res.json({
                     success: false,
                     message: "Nothing updated",
@@ -73,7 +72,27 @@ const messageControllers = {
                 select: "name picture email",
             });
 
-            await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+            let chat = await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+
+            if (chat.users.includes("657eed61c7fe9a7a9b5c3ac8")) {
+                console.log("send to bot");
+                var newMessage = {
+                    sender: "657eed61c7fe9a7a9b5c3ac8",
+                    content: "Reply: " + message.content,
+                    chat: chatId,
+                };
+                message = new Message(newMessage);
+                await message.save();
+
+                message = await message.populate("sender", "name picture");
+                message = await message.populate("chat");
+                message = await User.populate(message, {
+                    path: "chat.users",
+                    select: "name picture email",
+                });
+
+                await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+            }
 
             res.json(message);
         } catch (error) {

@@ -7,3 +7,15 @@ export const getOtherUser = (list, user) => {
         return null;
     }
 };
+
+export const isChatBot = (list) => {
+    const bot = list.find(element => element.hd === 'iia.tdtu.edu.vn');
+    if (bot)
+        return true
+    else
+        return false
+};
+
+export const isUserSign = (userId, userState) => {
+    return userId === userState._id
+};

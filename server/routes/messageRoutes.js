@@ -10,6 +10,6 @@ const test = (req, res, next) => {
 }
 
 router.post('/', protect, messageControllers.sendMessage)
-router.get('/:chatId', protect, messageControllers.lazyLoadingMessages)
+router.get('/:chatId/:counter', protect, messageControllers.lazyLoadingMessages)
 
 module.exports = router
