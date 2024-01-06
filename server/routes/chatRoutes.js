@@ -5,12 +5,12 @@ const protect = require("../api/v1/middlewares/validate")
 
 const test = (req, res, next) => {
     req.user = {
-        _id: '657e6be844764c6a5bd1382d'
+        _id: '659417f89885f634e72cfebe'
     };
     next();
 }
 
-router.get('/', protect, chatControllers.getRecentlyChatUserLimit)
+router.get('/',test ,chatControllers.getRecentlyChatUserLimit)
 router.post('/', test, chatControllers.accessChat)
 
 module.exports = router
