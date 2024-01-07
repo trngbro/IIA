@@ -2,10 +2,12 @@ import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { isUserSign } from '../../Logic/userLogics'
+import { Progress } from '@chakra-ui/react'
 
 const ChatConversation = (props) => {
     const [chats, setChats] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [isFetching, setIsFetching] = useState(false);
+    const [isIndeterminate, setIsIndeterminate] = useState(false)
     const [sendingInput, setSendingInput] = useState("")
     const history = useHistory()
 
@@ -34,7 +36,7 @@ const ChatConversation = (props) => {
     }
 
     const nextFetchChats = async () => {
-        setLoading(true)
+        setIsIndeterminate(true)
         let res = await axios.get(`/api/message/${chatInfo._id}/${chats.length}`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -42,25 +44,22 @@ const ChatConversation = (props) => {
             }
         });
 
-        if (res.data.success && res.data.data && Array.isArray(res.data.data)) {
-            res = res.data.data.reverse()
-            setChats([
-                ...res
-            ])
-            return
+        console.log(res.data);
+
+        if (res.data.success) {
+            setChats(res.data.data.reverse())
         } else {
-            console.log(res);
+
         }
 
-        console.log("in");
-        setLoading(false)
+        setIsIndeterminate(false)
         return
-
     }
 
     useEffect(() => {
         const fetchChats = async () => {
-            const res = await axios.get(`/api/message/${chatInfo._id}/0`, {
+            setIsIndeterminate(true)
+            const res = await axios.get(`/api/message/${chatInfo._id}/${chats.length || 0}`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
@@ -68,6 +67,8 @@ const ChatConversation = (props) => {
             });
 
             setChats(res.data.data.reverse())
+            setIsIndeterminate(false)
+            return
         }
 
 
@@ -76,14 +77,20 @@ const ChatConversation = (props) => {
 
         const conversationMain = document.querySelector('.conversation-main');
 
-        const handleScroll = () => {
+        const handleScroll = async () => {
             const scrolledValue = conversationMain.scrollTop;
-            if (scrolledValue === 0)
-                nextFetchChats()
+            if (scrolledValue === 0 && !isFetching) {
+                console.log("spam");
+                conversationMain.removeEventListener('scroll', handleScroll);
+                setIsFetching(true);
+                await nextFetchChats().then(() => {
+                    setIsFetching(false);
+                });
+            }
         };
         conversationMain.addEventListener('scroll', handleScroll);
 
-    }, [loading])
+    }, [isFetching])
 
     return (
         <div className="conversation active" id="a">
@@ -103,6 +110,8 @@ const ChatConversation = (props) => {
                 </div>
             </div>
             <div className="conversation-main">
+                <Progress size='xs' isIndeterminate={isIndeterminate} />
+
                 <ul className="conversation-wrapper">
                     {
                         chats && chats.length > 0 &&
@@ -133,6 +142,8 @@ const ChatConversation = (props) => {
                             )
                         })
                     }
+
+
 
                 </ul>
             </div>

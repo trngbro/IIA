@@ -11,6 +11,13 @@ const messageControllers = {
     //@access          Protected
     lazyLoadingMessages: asyncHandler(async (req, res) => {
         try {
+            if (await Message.find({ chat: req.params.chatId }) === req.params.counter) {
+                return res.json({
+                    success: true,
+                    message: "Has fetch all yet",
+                    data: null
+                })
+            }
             const messages = await Message.find({ chat: req.params.chatId })
                 .populate("sender", "name picture email")
                 .populate("chat")
