@@ -3,8 +3,13 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { isUserSign } from '../../Logic/userLogics'
 import { Progress } from '@chakra-ui/react'
+import io from "socket.io-client";
+
+
+var socket, selected
 
 const ChatConversation = (props) => {
+    const div = useRef(null);
     const [chats, setChats] = useState([])
     const [isFetching, setIsFetching] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(false)
@@ -25,9 +30,10 @@ const ChatConversation = (props) => {
         });
         if (res.status === 200 && res.data) {
             setSendingInput("")
+            socket.emit("new message", res.data.data);
             let updateData = [
                 ...chats,
-                res.data
+                res.data.data
             ]
             setChats(updateData)
         } else {
@@ -55,6 +61,19 @@ const ChatConversation = (props) => {
         setIsIndeterminate(false)
         return
     }
+
+    useEffect(() => {
+        socket = io("http://localhost:8080")
+        socket.emit("setup", userId);
+    }, [])
+
+    useEffect(() => {
+        socket.on("message recieved", (newMessageRecieved) => {
+            if (chatInfo._id !== newMessageRecieved.chat._id) {
+                setIsFetching(!isFetching)
+            }
+        });
+    });
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -110,9 +129,11 @@ const ChatConversation = (props) => {
                 </div>
             </div>
             <div className="conversation-main">
-                <Progress size='xs' isIndeterminate={isIndeterminate} />
+                <Progress size='xs' isIndeterminate />
 
-                <ul className="conversation-wrapper">
+                <ul className="conversation-wrapper" ref={div}
+                    onLoad={() => div.current.scrollIntoView({ behavior: "auto", block: "end" })}
+                >
                     {
                         chats && chats.length > 0 &&
                         chats.map((chat, index) => {
@@ -142,9 +163,6 @@ const ChatConversation = (props) => {
                             )
                         })
                     }
-
-
-
                 </ul>
             </div>
             <div className="conversation-form">

@@ -83,28 +83,19 @@ const messageControllers = {
 
             if (chat.users.includes("657eed61c7fe9a7a9b5c3ac8")) {
                 console.log("send to bot");
-                var newMessage = {
-                    sender: "657eed61c7fe9a7a9b5c3ac8",
-                    content: "Reply: " + message.content,
-                    chat: chatId,
-                };
-                message = new Message(newMessage);
-                await message.save();
-
-                message = await message.populate("sender", "name picture");
-                message = await message.populate("chat");
-                message = await User.populate(message, {
-                    path: "chat.users",
-                    select: "name picture email",
-                });
-
-                await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
             }
 
-            res.json(message);
+            res.json({
+                success: true,
+                message: "Message sent successfully",
+                data: message
+            })
         } catch (error) {
-            res.status(400);
-            throw new Error(error.message);
+            res.json({
+                success: false,
+                message: "Falal errors",
+                data: error
+            })
         }
     })
 }

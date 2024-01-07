@@ -35,4 +35,36 @@ app.use("/admin", adminRouter)
 app.use("/test", require("./routes/fakeRoutes"))
 
 //publishing
-app.listen(process.env.PORT || 8080, () => console.log(`Server started on port ${process.env.PORT || 8080}`))
+const server = app.listen(process.env.PORT || 8080, () => console.log(`Server started on port ${process.env.PORT || 8080}`))
+
+const io = require("socket.io")(server, {
+    pingTimeout: 60000,
+    cors: {
+        origin: "http://localhost:3000",
+        // credentials: true,
+    },
+});
+
+io.on("connection", (socket) => {
+    console.log("Connected to socket.io");
+    socket.on("setup", (userId) => {
+        socket.join(userId);
+        socket.emit("connected");
+    });
+    socket.on("new message", (newMessageRecieved) => {
+        var chat = newMessageRecieved.chat;
+
+        if (!chat.users) return console.log("chat.users not defined");
+
+        chat.users.forEach((userId) => {
+            if (userId == newMessageRecieved.sender._id) return;
+
+            socket.in(userId).emit("message recieved", newMessageRecieved);
+        });
+    });
+
+    socket.off("setup", () => {
+        console.log("USER DISCONNECTED");
+        socket.leave(userId);
+    });
+})

@@ -35,16 +35,12 @@ const chatControllers = {
                         path: "latestMessage.sender",
                         select: "name picture email",
                     });
-                    console.log(results);
                     res.json({
                         success: true,
                         message: "Fetch data successfully",
                         data: results
                     })
                 });
-            let temp_search = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
-                .populate("users", "-password")
-            console.log(temp_search);
         } catch (error) {
             res.json({
                 success: false,
