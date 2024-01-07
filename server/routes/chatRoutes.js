@@ -10,7 +10,7 @@ const test = (req, res, next) => {
     next();
 }
 
-router.get('/',test ,chatControllers.getRecentlyChatUserLimit)
-router.post('/', test, chatControllers.accessChat)
+router.get('/', protect, chatControllers.getRecentlyChatUserLimit)
+router.post('/', protect, chatControllers.accessChat)
 
 module.exports = router

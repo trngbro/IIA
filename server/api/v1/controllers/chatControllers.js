@@ -9,18 +9,24 @@ function getLastWeeksDate() {
     return new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 }
 
+function testDate() {
+    const now = new Date();
+
+    return new Date(now.getTime() - 1234 * 24 * 60 * 60 * 1000);
+}
+
 const chatControllers = {
     //@description     Lấy danh sách những người liên hệ gần đây với điều kiện tin nhắn gần nhất trong 7 ngày và được tạo liên hệ
     //@route           POST /api/chat/
     //@access          Protected
-    getRecentlyChatUserLimit: asyncHandler((req, res) => {
+    getRecentlyChatUserLimit: asyncHandler(async (req, res) => {
         try {
-            Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+            await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
                 .populate("users", "-password")
                 .populate({
                     path: "latestMessage",
                     match: {
-                        updatedAt: { $gte: getLastWeeksDate() },
+                        updatedAt: { $gte: testDate() },
                     },
                 })
                 .sort({ updatedAt: -1 })
@@ -29,12 +35,16 @@ const chatControllers = {
                         path: "latestMessage.sender",
                         select: "name picture email",
                     });
+                    console.log(results);
                     res.json({
                         success: true,
                         message: "Fetch data successfully",
                         data: results
                     })
                 });
+            let temp_search = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
+                .populate("users", "-password")
+            console.log(temp_search);
         } catch (error) {
             res.json({
                 success: false,
