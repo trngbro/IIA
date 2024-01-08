@@ -3,7 +3,9 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { isUserSign } from '../../Logic/userLogics'
 import { Progress } from '@chakra-ui/react'
+import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import io from "socket.io-client";
+import env from "react-dotenv";
 
 
 var socket, selected
@@ -12,11 +14,16 @@ const ChatConversation = (props) => {
     const div = useRef(null);
     const [chats, setChats] = useState([])
     const [isFetching, setIsFetching] = useState(false);
+    const [isTyping, setIsTyping] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(false)
     const [sendingInput, setSendingInput] = useState("")
     const history = useHistory()
 
-    const { chatInfo, token, userId } = props;
+    const { chatInfo_prop, token_prop, userId_prop } = props;
+
+    const [chatInfo, setChatInfo] = useState(chatInfo_prop)
+    const [token, setToken] = useState(token_prop)
+    const [userId, setUserId] = useState(userId_prop)
 
     const clickToSendMessage = async () => {
         const res = await axios.post('/api/message', {
@@ -63,17 +70,34 @@ const ChatConversation = (props) => {
     }
 
     useEffect(() => {
-        socket = io("http://localhost:8080")
+        socket = io(process.env.CLIENT_URL)
+        console.log(userId);
         socket.emit("setup", userId);
+        socket.emit("join chat", chatInfo)
+        socket.on("typing", (bol) => {
+            setIsTyping(true)
+            console.log("other typing is ", isTyping);
+        });
+        socket.on("stop typing", (bol) => {
+            setIsTyping(false)
+            console.log("other typing is ", isTyping);
+        });
+        socket.on("message received", (newMessageReceived) => {
+            let updateData = [
+                ...chats,
+                newMessageReceived
+            ]
+            setChats(updateData)
+        });
     }, [])
 
     useEffect(() => {
-        socket.on("message recieved", (newMessageRecieved) => {
-            if (chatInfo._id !== newMessageRecieved.chat._id) {
-                setIsFetching(!isFetching)
-            }
-        });
-    });
+        if (sendingInput) {
+            socket.emit("typing", chatInfo);
+        } else {
+            socket.emit("stop typing", chatInfo);
+        }
+    }, [sendingInput])
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -163,6 +187,32 @@ const ChatConversation = (props) => {
                             )
                         })
                     }
+                    {
+                        isTyping ? (
+                            <li className={"conversation-item me"}>
+                                <div className="conversation-item-side">
+                                    <SkeletonCircle size='5' />
+                                </div>
+                                <div className="conversation-item-content">
+                                    <div className="conversation-item-wrapper">
+                                        <div className="conversation-item-box">
+                                            <SkeletonText mt='4' noOfLines={3} spacing='4' skeletonHeight='2' />
+                                            <div className="conversation-item-dropdown">
+                                                <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
+                                                <ul className="conversation-item-dropdown-list">
+                                                    <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
+                                                    <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        ) : (
+                            <></>
+                        )
+                    }
+
                 </ul>
             </div>
             <div className="conversation-form">

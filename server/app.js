@@ -47,24 +47,58 @@ const io = require("socket.io")(server, {
 
 io.on("connection", (socket) => {
     console.log("Connected to socket.io");
+
     socket.on("setup", (userId) => {
-        socket.join(userId);
-        socket.emit("connected");
+        if (userId && userId._id) {
+            const userRoom = `user_${userId._id}`;
+            socket.join(userRoom);
+            console.log("User Joined User Room: " + userRoom);
+        }
     });
-    socket.on("new message", (newMessageRecieved) => {
-        var chat = newMessageRecieved.chat;
 
-        if (!chat.users) return console.log("chat.users not defined");
+    socket.on("join chat", (room) => {
+        if (room && room._id) {
+            const chatRoom = `chat_${room._id}`;
+            socket.join(chatRoom);
+            console.log("User Joined Chat Room: " + chatRoom);
+        }
+    });
 
-        chat.users.forEach((userId) => {
-            if (userId == newMessageRecieved.sender._id) return;
+    socket.on("typing", (room) => {
+        if (room && room._id) {
+            console.log("Typing in Room: " + room._id);
+            socket.in(`chat_${room._id}`).emit("typing", true);
+        }
+    });
 
-            socket.in(userId).emit("message recieved", newMessageRecieved);
+    socket.on("stop typing", (room) => {
+        if (room && room._id) {
+            console.log("Stopped Typing in Room: " + room._id);
+            socket.in(`chat_${room._id}`).emit("stop typing", false);
+        }
+    });
+
+    socket.on("new message", (newMessageReceived) => {
+        const chat = newMessageReceived.chat;
+
+        if (!chat || !chat.users) {
+            console.log("Chat or chat.users not defined");
+            return;
+        }
+
+        chat.users.forEach((user) => {
+            if (user._id !== newMessageReceived.sender._id) {
+                console.log("Sending message to user: ", user._id);
+                socket.in(`user_${user._id}`).emit("message received", newMessageReceived);
+            }
         });
     });
 
-    socket.off("setup", () => {
-        console.log("USER DISCONNECTED");
-        socket.leave(userId);
+    socket.on("leave chat", (room) => {
+        if (room && room._id) {
+            console.log("User Leaving Chat Room: ", room._id);
+            socket.leave(`chat_${room._id}`);
+            socket.emit("disconnectEvent", room._id);
+        }
     });
-})
+});

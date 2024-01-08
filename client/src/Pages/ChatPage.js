@@ -10,6 +10,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ActionCreators } from "../store/index.js";
 import { bindActionCreators } from 'redux';
 import { getOtherUser, isChatBot } from '../Logic/userLogics.js'
+import io from "socket.io-client";
+import env from "react-dotenv";
+
+var socket, selected
 
 const ChatPage = () => {
     const history = useHistory()
@@ -43,6 +47,14 @@ const ChatPage = () => {
     }, [state.token, chats]);
 
     useEffect(() => {
+        socket = io(process.env.CLIENT_URL)
+    }, [])
+
+    useEffect(() => {
+        setIsChoose(isChoose)
+    }, [isChoose]);
+
+    useEffect(() => {
         if (!state.token) {
             history.push("/");
             return;
@@ -53,13 +65,19 @@ const ChatPage = () => {
     }, [chatBotInfo]);
 
     const handleClickToSearchButton = () => {
-        console.log("clicked");
         return
         fetchUserChatData(searchValue)
     }
 
     const handleClickToNav = async (chat) => {
-        setIsChoose(chat)
+        if (isChoose) {
+            socket.emit("leave chat", isChoose)
+            setIsChoose(null)
+        }
+        else {
+            socket.emit("join chat", chat)
+            setIsChoose(chat)
+        }
     }
 
     const handleClickToLogout = () => {
@@ -178,7 +196,7 @@ const ChatPage = () => {
                                                     picture: user.picture,
                                                     content: chat.latestMessage ? chat.latestMessage.content : content,
                                                     latestMessage: {
-                                                        createdAt: chat.latestMessage ? chat.latestMessage.createdAt : time
+                                                        createdAt: chat.latestMessage ? new Date(chat.latestMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }) : time
                                                     }
                                                 });
                                             } else if (!isChatBot(chat.users)) {
@@ -186,11 +204,20 @@ const ChatPage = () => {
                                                     time = new Date(chat.latestMessage.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
                                                     content = chat.latestMessage.content
                                                 }
+                                                let userDiv = {
+                                                    _id: chat._id,
+                                                    name: user.name,
+                                                    picture: user.picture,
+                                                    content: chat.latestMessage ? chat.latestMessage.content : content,
+                                                    latestMessage: {
+                                                        createdAt: chat.latestMessage ? chat.latestMessage.createdAt : time
+                                                    }
+                                                }
                                                 return (
                                                     <>
                                                         <li
                                                             key={chat._id}
-                                                            onClick={() => setIsChoose(chat)}
+                                                            onClick={() => handleClickToNav(userDiv)}
                                                         >
                                                             <div data-conversation={chat._id}>
                                                                 <img className="content-message-image" src={user.picture} alt="" />
@@ -206,6 +233,8 @@ const ChatPage = () => {
                                                         </li>
                                                     </>
                                                 )
+
+
                                             }
                                         })
                                     }
@@ -220,9 +249,9 @@ const ChatPage = () => {
                                 </div>
                                 :
                                 <ChatConversation
-                                    chatInfo={isChoose}
-                                    token={state.token}
-                                    userId={state.info._doc}
+                                    chatInfo_prop={isChoose}
+                                    token_prop={state.token}
+                                    userId_prop={state.info._doc}
                                 />
                         }
                     </div>
