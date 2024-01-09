@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../models/User")
 const Chat = require("../models/Chat")
 const Message = require("../models/Message")
+const autoReply = require("../bot/autoReply")
 
 
 const messageControllers = {
@@ -82,7 +83,8 @@ const messageControllers = {
             let chat = await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
 
             if (chat.users.includes("657eed61c7fe9a7a9b5c3ac8")) {
-                console.log("send to bot");
+                console.log("send to bot", message);
+                autoReply(message)
             }
 
             res.json({

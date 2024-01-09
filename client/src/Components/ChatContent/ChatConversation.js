@@ -1,23 +1,19 @@
 import React, { useRef, useEffect, useState } from 'react'
 import axios from 'axios'
-import { useHistory } from 'react-router-dom'
 import { isUserSign } from '../../Logic/userLogics'
-import { Progress } from '@chakra-ui/react'
-import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
+import { Progress, SkeletonCircle, SkeletonText } from '@chakra-ui/react'
 import io from "socket.io-client";
-import env from "react-dotenv";
 
-
-var socket, selected
+var socket
 
 const ChatConversation = (props) => {
     const div = useRef(null);
     const [chats, setChats] = useState([])
     const [isFetching, setIsFetching] = useState(false);
+    const [isActive, setIsActive] = useState(true);
     const [isTyping, setIsTyping] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(false)
     const [sendingInput, setSendingInput] = useState("")
-    const history = useHistory()
 
     const { chatInfo_prop, token_prop, userId_prop } = props;
 
@@ -136,9 +132,11 @@ const ChatConversation = (props) => {
     }, [isFetching])
 
     return (
-        <div className="conversation active" id="a">
+        <div className={isActive ? "conversation active" : "conversation"} id="a">
             <div className="conversation-top">
-                <button type="button" className="conversation-back"><i className="ri-arrow-left-line"></i></button>
+                <button type="button" className="conversation-back"
+                    onClick={() => setIsActive(false)}
+                ><i className="ri-arrow-left-line"></i></button>
                 <div className="conversation-user">
                     <img className="conversation-user-image" src={chatInfo.picture} alt="" />
                     <div>
@@ -171,7 +169,7 @@ const ChatConversation = (props) => {
                                             <div className="conversation-item-box">
                                                 <div className="conversation-item-text">
                                                     <p>{chat.content ? chat.content : ""}</p>
-                                                    <div className="conversation-item-time">{chat.createdAt}</div>
+                                                    <div className="conversation-item-time">{new Date(chat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</div>
                                                 </div>
                                                 <div className="conversation-item-dropdown">
                                                     <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
@@ -197,13 +195,6 @@ const ChatConversation = (props) => {
                                     <div className="conversation-item-wrapper">
                                         <div className="conversation-item-box">
                                             <SkeletonText mt='4' noOfLines={3} spacing='4' skeletonHeight='2' />
-                                            <div className="conversation-item-dropdown">
-                                                <button type="button" className="conversation-item-dropdown-toggle"><i className="ri-more-2-line"></i></button>
-                                                <ul className="conversation-item-dropdown-list">
-                                                    <li><a href="./chats"><i className="ri-share-forward-line"></i> Forward</a></li>
-                                                    <li><a href="./chats"><i className="ri-delete-bin-line"></i> Delete</a></li>
-                                                </ul>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

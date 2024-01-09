@@ -26,6 +26,7 @@ const indexController = {
                         exp: user.exp
                     })
                     autoFirstTime(newUser._id)
+                    console.log(findUser);
                     res.json({
                         success: true,
                         user: { ...findUser },
