@@ -35,6 +35,7 @@ const chatControllers = {
                         path: "latestMessage.sender",
                         select: "name picture email",
                     });
+                    console.log(results);
                     res.json({
                         success: true,
                         message: "Fetch data successfully",

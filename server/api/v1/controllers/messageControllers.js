@@ -83,19 +83,69 @@ const messageControllers = {
             let chat = await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
 
             if (chat.users.includes("657eed61c7fe9a7a9b5c3ac8")) {
-                console.log("send to bot", message);
-                autoReply(message)
+                res.json({
+                    success: true,
+                    isBot: true,
+                    message: "Message sent successfully",
+                    data: message
+                })
+            } else {
+                res.json({
+                    success: true,
+                    isBot: false,
+                    message: "Message sent successfully",
+                    data: message
+                })
             }
 
-            res.json({
-                success: true,
-                message: "Message sent successfully",
-                data: message
-            })
+
         } catch (error) {
             res.json({
                 success: false,
                 message: "Falal errors",
+                data: error
+            })
+        }
+    }),
+
+    //@description     Create New Message for Bot reply
+    //@route           POST /api/Message/
+    //@access          Protected
+    sendMessageToBot: asyncHandler(async (req, res) => {
+        const { content, chatId } = req.body;
+
+        if (!content || !chatId) {
+            return res.json({
+                success: false,
+                message: "Invalid data passed into request",
+                data: null
+            })
+        }
+
+        try {
+            var message = await autoReply(JSON.parse(content))
+
+            console.log(message);
+
+            message = await message.populate("sender", "name picture");
+            message = await message.populate("chat");
+            message = await User.populate(message, {
+                path: "chat.users",
+                select: "name picture email",
+            });
+            await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+            res.json({
+                success: true,
+                isBot: false,
+                message: "Message sent successfully",
+                data: message
+            })
+
+
+        } catch (error) {
+            res.json({
+                success: false,
+                message: "Fatal errors",
                 data: error
             })
         }

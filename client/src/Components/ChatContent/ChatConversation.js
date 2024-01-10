@@ -14,6 +14,7 @@ const ChatConversation = (props) => {
     const [isTyping, setIsTyping] = useState(false);
     const [isIndeterminate, setIsIndeterminate] = useState(false)
     const [sendingInput, setSendingInput] = useState("")
+    const [isCallback, setIsCallback] = useState(true)
 
     const { chatInfo_prop, token_prop, userId_prop } = props;
 
@@ -22,6 +23,11 @@ const ChatConversation = (props) => {
     const [userId, setUserId] = useState(userId_prop)
 
     const clickToSendMessage = async () => {
+        setIsCallback(false)
+        if (!sendingInput) {
+            alert("nhập gì đó")
+            return
+        }
         const res = await axios.post('/api/message', {
             content: sendingInput,
             chatId: chatInfo._id
@@ -31,17 +37,45 @@ const ChatConversation = (props) => {
                 'Content-Type': 'application/json'
             }
         });
+
         if (res.status === 200 && res.data) {
-            setSendingInput("")
+
             socket.emit("new message", res.data.data);
-            let updateData = [
-                ...chats,
-                res.data.data
-            ]
-            setChats(updateData)
+            setSendingInput("")
+            if (res.data.isBot) {
+                let res_bot = await axios.post('/api/message/bot', {
+                    content: JSON.stringify(res.data.data),
+                    chatId: chatInfo._id
+                }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (res_bot.data.data) {
+                    let updateDataSender = [
+                        ...chats,
+                        res.data.data,
+                        res_bot.data.data
+                    ]
+                    setChats(updateDataSender)
+                }
+            } else {
+                if (res.data.data) {
+                    let updateData = [
+                        ...chats,
+                        res.data.data
+                    ]
+                    setChats(updateData)
+                }
+            }
+
+
         } else {
 
         }
+        setIsCallback(true)
     }
 
     const nextFetchChats = async () => {
@@ -52,8 +86,6 @@ const ChatConversation = (props) => {
                 'Content-Type': 'application/json'
             }
         });
-
-        console.log(res.data);
 
         if (res.data.success) {
             setChats(res.data.data.reverse())
@@ -209,9 +241,11 @@ const ChatConversation = (props) => {
             <div className="conversation-form">
                 <button type="button" className="conversation-form-button"><i className="ri-emotion-line"></i></button>
                 <div className="conversation-form-group">
-                    <textarea value={sendingInput} className="conversation-form-input" rows="1" placeholder="Type here..."
+                    <textarea value={sendingInput} className="conversation-form-input" rows="1" placeholder={isCallback ? "Typing here" : "Solving question"}
                         onChange={(e) => setSendingInput(e.target.value)}
                     ></textarea>
+
+                    <Progress size='xs' isIndeterminate={!isCallback} />
                 </div>
                 <button type="button" className="conversation-form-button conversation-form-submit"
                     onClick={() => clickToSendMessage()}
