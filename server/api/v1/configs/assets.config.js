@@ -50,7 +50,7 @@ module.exports = {
                     <!-- NProgress -->
                     <link href="${process.env.SERVER_URL}/vendors/nprogress/nprogress.css" rel="stylesheet">
                     <!-- Custom Theme Style -->
-                    <link href="${process.env.SERVER_URL}/stylesheets/custom.min.css" rel="stylesheet">
+                    <link href="${process.env.SERVER_URL}/stylesheets/custom.css" rel="stylesheet">
                     <link href="${process.env.SERVER_URL}/vendors/dropzone/dist/min/dropzone.min.css" rel="stylesheet">
                 `
         }

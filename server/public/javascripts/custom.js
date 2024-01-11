@@ -4998,6 +4998,95 @@ function init_echarts() {
 
 }
 
+$(document).ready(function () {
+    $(".btn-edit-department").click(function () {
+        var id = $(this).attr('id')
+        var data = $('.' + id);
+        var data2 = []
+        data.each(function () {
+            data2.push($(this).text())
+        })
+
+        $('#name').val(data2[0])
+        $('#room').val(data2[1])
+        $('#phone').val(data2[2])
+        $('#email').val(data2[3])
+        $('#description').val(data2[4])
+        $('#departmentId').val(id)
+    })
+})
+
+$(document).ready(function () {
+    $(".btn-delete-department").click(function () {
+        var id = $(this).attr('data')
+        var data = $('.' + id);
+        var data2 = []
+        data.each(function () {
+            data2.push($(this).text())
+        })
+
+        $('#d-data').html(data2[0] + " - " + data2[1])
+        $('#idForDelete').html(id)
+    })
+})
+
+$(document).ready(function () {
+    $("#editSpecticalItem").click(function () {
+        const departmentId = $('#departmentId').val();
+        const name = $('#name').val()
+        const room = $('#room').val()
+        const phone = $('#phone').val()
+        const email = $('#email').val()
+        const description = $('#description').val()
+        
+        $.post("/admin/v2/department/update", {
+            departmentId: departmentId,
+            name: name,
+            room: room,
+            phone: phone,
+            email: email,
+            description: description
+        }, function (data) {
+            console.log(data)
+            if (data === "Successed") {
+                var data = $('.' + departmentId);
+                data.eq(0).html(name)
+                data.eq(1).html(room)
+                data.eq(2).html(phone)
+                data.eq(3).html(email)
+                data.eq(4).html(description)
+                alert("Updated successfully")
+            } else {
+                alert("Fail to updated")
+            }
+        })
+        $('#editform').modal('hide');
+    })
+})
+
+$(document).ready(function () {
+    $("#confirmedDeletedDepartment").click(function () {
+        let id = $('#idForDelete').html();
+        fetch(`/admin/v2/department/delete/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert("Do not delete this department")
+            } else if (response.status === 200) {
+                $('#Row_'+id).remove();
+                alert("This department had deleted!")
+            } else {
+                console.log(response)
+                alert("Somethings error")
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        $('#delete').modal('hide');
+    })
+})
 
 $(document).ready(function () {
 

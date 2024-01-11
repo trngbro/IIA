@@ -11,7 +11,7 @@ import { ActionCreators } from "../store/index.js";
 import { bindActionCreators } from 'redux';
 import { getOtherUser, isChatBot } from '../Logic/userLogics.js'
 import io from "socket.io-client";
-import env from "react-dotenv";
+//import env from "react-dotenv";
 
 var socket, selected
 

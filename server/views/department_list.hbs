@@ -56,18 +56,20 @@
                     <th>Action</th>
                 </tr>
                 </thead>
-
-
                 <tbody>
                     {{#each departments}}
-                        <tr>
-                            <td>{{name}}</td>
-                            <td>{{numberOfEmployees}}</td>
-                            <td>{{interaction}}</td>
-                            <td>{{interactionPerMonth}}</td>
+                        <tr id="Row_{{id}}">
+                            <td class="{{id}}">{{name}}</td>
+                            <td class="{{id}}" hidden>{{room}}</td>
+                            <td class="{{id}}" hidden>{{phone}}</td>
+                            <td class="{{id}}" hidden>{{email}}</td>
+                            <td class="{{id}}" hidden>{{description}}</td>
+                            <td class="{{id}}">{{numberOfEmployees}}</td>
+                            <td class="{{id}}">{{interaction}}</td>
+                            <td class="{{id}}">{{interactionPerMonth}}</td>
                             <td>
-                                <button data-toggle="modal" data-target="#delete" data="{{name}}" class="btn-delete-product">Delete</button>
-                                <button data-toggle="modal" data-target="#editform" id="{{name}}" class="btn-edit-product">Edit</button>
+                                <button data-toggle="modal" data-target="#delete" data="{{id}}" class="btn-delete-department">Delete</button>
+                                <button data-toggle="modal" data-target="#editform" id="{{id}}" class="btn-edit-department">Edit</button>
                             </td>
                         </tr>
                     {{/each}}
@@ -81,4 +83,70 @@
         </div>
     </div>
     </div>
+</div>
+
+<div class="modal fade" id="editform" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lable">Edit Department</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form>
+          <input type="text" class="form-control" required="required" id="departmentId" name="departmentId" hidden>
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" required="required" id="name" name="name">
+          </div>
+           <div class="form-group">
+            <label for="room">Room</label>
+            <input type="text" class="form-control" autocomplete="off" id="room" name="room">
+          </div>
+           <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone">
+          </div>
+           <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" class="form-control" id="email" name="email">
+          </div>
+           <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" id="description" name="description">
+          </div>
+        </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button id="editSpecticalItem" type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="delete" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="lable">Are you sure to delete this department?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="d-data"></p>
+        <p id="idForDelete" hidden></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-warning" id="confirmedDeletedDepartment">Yes</button>
+      </div>
+    </div>
+  </div>
 </div>
