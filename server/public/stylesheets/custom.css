@@ -4971,3 +4971,20 @@ ul.notifications {
 
 .calendar-exibit .calendar-table {
   padding: 0 0 4px 0; }
+
+.staffEmailInput{
+  margin: auto ;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-addStaff{
+  width: 70px;
+}
+
+#dropList{
+  width: 100%;
+  height: 40px;
+  font-size: medium;
+}

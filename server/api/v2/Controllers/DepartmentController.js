@@ -92,7 +92,17 @@ const departmentController = {
             console.log(error)
             res.status(400).send("Failed")
         }
-    }
+    },
+
+    getAllDepartment: async (req, res) => {
+        try {
+            const departments = await Department.find({});
+            res.status(200).json(departments);
+        } catch (error) {
+            console.error(error);
+            res.status(400).send("Failed");
+        }
+    },
 }
 
 module.exports = departmentController
