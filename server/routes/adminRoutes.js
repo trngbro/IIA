@@ -19,6 +19,7 @@ router.delete('/v2/department/delete/:id', departmentController.deleteDepartment
 router.get('/v2/getAllDepartment', departmentController.getAllDepartment)
 
 router.get('/v2/staff',staffController.staff_list)
-router.get('/v2/staff/add',staffController.staff_add)
-router.post('/v2/staff/add',staffController.loadStaff)
+router.get('/v2/staff/add',staffController.getAddStaffPage)
+router.post('/v2/staff/loadstaff',staffController.loadStaff)
+router.post('/v2/staff/add',staffController.addStaff)
 module.exports = router;

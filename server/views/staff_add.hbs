@@ -28,13 +28,13 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form class="" action="" method="post" novalidate>
+                        <form novalidate>
                             <div class="staffEmailInput">
                                 <label>Enter staff's email</label>
                                 <div class="field item form-group">
                                     <input class="form-control" type="email" id="staffEmail" class="form-control" placeholder="Enter email">
                                         <div class="input-group-append">
-                                    <button id="loadStaff" class="btn btn-primary btn-addStaff"> Add</button>
+                                    <button id="loadStaff" class="btn btn-primary btn-addStaff" type="button"> Add</button>
                                 </div>
                             </div>
                                 
@@ -47,10 +47,11 @@
                                     </div>
                                 </div> 
                             </div>
+                            <input class="form-control" id="showStaffID" name="userId" type="text" id="text" hidden class="form-control">
                             <div class="staffEmailInput">
                                 <label> Choose department </label>
                                 <div class="field item form-group">
-                                    <select class="form-control">
+                                    <select class="form-control" id="departmentId">
                                         {{#each departments}}
                                             <option value="{{_id}}">{{name}}</option>
                                         {{/each}}
@@ -60,7 +61,7 @@
                             <div class="ln_solid">
                                 <div class="form-group">
                                     <div class="col-md-6 offset-md-3">
-                                        <button type='submit' class="btn btn-primary">Submit</button>
+                                        <button type='button' id="addStaff" class="btn btn-primary">Submit</button>
                                         <button type='reset' class="btn btn-success">Reset</button>
                                     </div>
                                 </div>

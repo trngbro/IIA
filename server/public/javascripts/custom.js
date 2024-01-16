@@ -3231,12 +3231,14 @@ $(document).ready(function () {
 $(document).ready(function () {
     $("#loadStaff").click(function () {
         const email = $("#staffEmail").val();
-  
-        $.post("/admin/v2/staff/add", { email: email }, function (data) {
+        console.log("hihihi")
+        $.post("/admin/v2/staff/loadstaff", { email: email }, function (data) {
             if (data !== undefined) {
                 $("#showStaff").val(data.name);
+                $("#showStaffID").val(data._id);
             } else {
                 $("#showStaff").val("Staff not found");
+                $("#showStaffID").val('');
             }
         });
     });
@@ -3244,6 +3246,18 @@ $(document).ready(function () {
     $("#addStaff-reset").click(function () {
         $("#showStaff").val('');
         $("#staffEmail").val('');
+    });
+
+    $("#addStaff").click(function () {
+        const userId = $("#showStaffID").val();
+        const departmentId = $("#departmentId").val()
+        $.post("/admin/v2/staff/add", { userId, departmentId })
+        .done(function (data) {
+            window.location = "http://localhost:8080/admin/v2/staff";
+        })
+        .fail(function (xhr, status, error) {
+            alert(xhr.responseJSON.message);
+        })
     })
 });
 
