@@ -2,6 +2,7 @@ const router = require("express").Router();
 const adminControllers = require("../api/v1/controllers/adminControllers")
 const departmentController = require("../api/v2/Controllers/DepartmentController")
 const staffController = require("../api/v2/Controllers/StaffController")
+const qAController = require("../api/v2/Controllers/QAController")
 
 // router.get('/login', adminControllers.login)
 router.get('/', adminControllers.index)
@@ -22,4 +23,6 @@ router.get('/v2/staff',staffController.staff_list)
 router.get('/v2/staff/add',staffController.getAddStaffPage)
 router.post('/v2/staff/loadstaff',staffController.loadStaff)
 router.post('/v2/staff/add',staffController.addStaff)
+
+router.get('/v2/chatbot/addQA', qAController.getAddQAPage)
 module.exports = router;
