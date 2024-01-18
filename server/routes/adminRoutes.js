@@ -23,6 +23,8 @@ router.get('/v2/staff',staffController.staff_list)
 router.get('/v2/staff/add',staffController.getAddStaffPage)
 router.post('/v2/staff/loadstaff',staffController.loadStaff)
 router.post('/v2/staff/add',staffController.addStaff)
+router.post('/v2/staff/update',staffController.updateStaff)
+router.delete('/v2/staff/delete/:id', staffController.deleteStaff)
 
 router.get('/v2/chatbot/addQA', qAController.getAddQAPage)
 module.exports = router;

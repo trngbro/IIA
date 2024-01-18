@@ -40,7 +40,7 @@ module.exports = {
                     <link href="${process.env.SERVER_URL}/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
                     <!-- Custom Theme Style -->
-                    <link href="${process.env.SERVER_URL}/stylesheets/custom.css" rel="stylesheet">
+                    <link href="/stylesheets/custom.css" rel="stylesheet">
                 `
             default:
                 return `

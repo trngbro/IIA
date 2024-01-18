@@ -3259,6 +3259,95 @@ $(document).ready(function () {
             alert(xhr.responseJSON.message);
         })
     })
+
+    $(".btn-edit-staff").click(function () {
+        var id = $(this).attr('id')
+        var data = $('.' + id);
+        var data2 = []
+        data.each(function () {
+            data2.push($(this).text())
+        })
+
+        $('#name').val(data2[1])
+        $('#username').val(data2[0])
+        $('#email').val(data2[2])
+        $('#rate').val(data2[4])
+        $('#staffId').val($(this).data("id"))
+
+        $.get("/admin/v2/getAllDepartment")
+        .done(function(data) {
+            const select = $("#selectDepartment");
+            data.forEach(e => {
+                let option = '';
+                if (data2[3] === e.name)
+                    option = `<option selected value="${e._id}">${e.name}</option>`;
+                else
+                    option = `<option value="${e._id}">${e.name}</option>`;
+                select.append(option);
+            })
+        })
+        .fail(function (xhr, status, error) {
+            alert(xhr.responseJSON.message);
+        })
+    })
+
+    $("#saveStaff").click(function () {
+        const staffId = $('#staffId').val()
+        const departmentId = $('#selectDepartment').val()
+        
+        $.post("/admin/v2/staff/update", {
+            staffId: staffId,
+            departmentId: departmentId
+        }, function (data) {
+            console.log(data)
+            if (data === "Successed") {
+                var selectedOption = $("#selectDepartment option:selected");
+                var selectedLabel = selectedOption.text();
+
+                const username = $('#username').val();
+                const data = $('.' + username);
+                data.eq(3).html(selectedLabel)
+                alert("Updated successfully")
+            } else {
+                alert("Fail to updated")
+            }
+        })
+        $('#editform').modal('hide');
+    })
+
+    $(".btn-delete-staff").click(function () {
+        var id = $(this).attr('data')
+        var data = $('.' + id);
+        var data2 = []
+        data.each(function () {
+            data2.push($(this).text())
+        })
+
+        $('#d-data').html(data2[0] + " - " + data2[1])
+        $('#idForDelete').html($(this).data("id"))
+    })
+
+    $("#confirmedDeletedStaff").click(function () {
+        let id = $('#idForDelete').html();
+        fetch(`/admin/v2/staff/delete/${id}`, {
+            method: 'DELETE',
+        })
+        .then(response => {
+            if (response.status === 401) {
+                alert("Do not delete this staff")
+            } else if (response.status === 200) {
+                $('#Row_'+id).remove();
+                alert("This staff had deleted!")
+            } else {
+                console.log(response)
+                alert("Somethings error")
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        $('#delete').modal('hide');
+    })
 });
 
 $(document).ready(function () {

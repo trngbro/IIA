@@ -15,6 +15,7 @@ const staffController = {
 
             staffs.forEach(e => {
                 arr.push({
+                    id: e._id,
                     username: e.user.username,
                     name: e.user.name,
                     email: e.user.email,
@@ -28,8 +29,8 @@ const staffController = {
                 javascripts: getJavascripts('table'),
                 staff: arr
             })
-        }catch{
-
+        } catch (error){
+            res.render("error", {error})
         }
         
     },
@@ -90,6 +91,36 @@ const staffController = {
             }
         } catch (error) {
             res.status(404).json({ name: "Not found staff" });
+        }
+    },
+
+    updateStaff: async (req, res) => {
+        try {
+            await Staff.findOneAndUpdate({
+                _id: req.body.staffId
+            }, {
+                department: req.body.departmentId
+            })
+            res.status(200).send("Successed")
+        } catch (error) {
+            console.log(error)
+            res.status(400).send("Failed")
+        }
+    },
+
+    deleteStaff: async (req, res) => {
+        const id = req.params.id;
+        const staff = await await Staff.findOne({_id: id })
+        if (!staff) {
+            return res.status(404).send('staff not found.');
+        }
+        const result = await Staff.findOneAndDelete({
+            _id: id
+        });
+        if (result) {
+            return res.status(200).send();
+        } else {
+            return res.status(500).send('Internal Server Error');
         }
     },
 }
