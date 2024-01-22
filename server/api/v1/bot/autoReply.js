@@ -17,7 +17,7 @@ module.exports = autoReply = async (message) => {
     try {
         let content = await use_find(message.content)
         let newMessage = new Message({
-            sender: "657eed61c7fe9a7a9b5c3ac8",
+            sender: "65a89c23e6eb0a160a17b787",
             content: content.document ? content.document.answer : "Hãy hỏi thông tin cụ thể hơn",
             chat: message.chat._id,
             readBy: [false]

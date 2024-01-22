@@ -82,7 +82,7 @@ const messageControllers = {
 
             let chat = await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
 
-            if (chat.users.includes("657eed61c7fe9a7a9b5c3ac8")) {
+            if (chat.users.includes("65a89c23e6eb0a160a17b787")) {
                 res.json({
                     success: true,
                     isBot: true,

@@ -191,6 +191,7 @@ const ChatConversation = (props) => {
                     {
                         chats && chats.length > 0 &&
                         chats.map((chat, index) => {
+                            console.log(chat);
                             return (
                                 <li key={index} className={!isUserSign(chat.sender._id, userId) ? "conversation-item me" : "conversation-item"}>
                                     <div className="conversation-item-side">

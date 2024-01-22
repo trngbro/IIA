@@ -25,9 +25,9 @@ const chatControllers = {
                 .populate("users", "-password")
                 .populate({
                     path: "latestMessage",
-                    match: {
-                        updatedAt: { $gte: testDate() },
-                    },
+                    // match: {
+                    //     updatedAt: { $gte: testDate() },
+                    // },
                 })
                 .sort({ updatedAt: -1 })
                 .then(async (results) => {

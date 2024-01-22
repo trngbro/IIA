@@ -17,11 +17,11 @@ const reducer = (state = init, action) => {
         case "USER_LOGOUT":
             localStorage.removeItem("userToken");
             localStorage.clear();
+
             return {}
         case "USER_LOGIN":
             localStorage.setItem("userToken", JSON.stringify(action.payload));
 
-            console.log(action.payload)
             return {
                 info: action.payload.user,
                 token: action.payload.data
