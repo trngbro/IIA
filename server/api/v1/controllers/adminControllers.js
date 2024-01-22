@@ -47,15 +47,20 @@ const adminControllers = {
     department_list: async (req, res) => {
         let departments = await Department.find({});
         let arr = [];
-        console.log(departments)
         departments.forEach(e => {
             arr.push({
+                id: e._id,
                 name: e.name,
+                room: e.room,
+                phone: e.phone,
+                email: e.email,
+                description: e.description,
                 numberOfEmployees: e.numberOfEmployees,
                 interaction: e.interaction,
                 interactionPerMonth: e.interactionPerMonth
             })
         })
+       
         res.render("department_list",{
             stylesheets: getStylesheets('table'),
             javascripts: getJavascripts('table'),

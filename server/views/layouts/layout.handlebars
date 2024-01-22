@@ -11,8 +11,7 @@
   <title>Admin Page </title>
   
   {{{stylesheets}}}
-  <!-- Custom Theme Style -->
-  <link href="../stylesheets/custom.min.css" rel="stylesheet">
+
 </head>
 
 <body class="nav-md">
@@ -21,7 +20,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="/admin" class="site_title"><img id="logo" style="max-height: 45px" src="../images/logo_tdtu.png"> <span>TDTU Chatbot</span></a>
+              <a href="/admin" class="site_title"><img id="logo" style="max-height: 45px" src="/images/logo_tdtu.png"> <span>TDTU Chatbot</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -45,9 +44,9 @@
               <div class="menu_section">
                 <h3>Chatbot</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-comment"></i> Dashboard <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-comment"></i> Knowledge <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a  href="/admin">Upload document</a></li>
+                      <li><a  href="/admin/v2/chatbot/addQA">Add QA</a></li>
                       <li><a href="document.html">Document</a></li>
                     </ul>
                   </li>
@@ -56,12 +55,6 @@
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
-                  <li><a><i class="fa fa-comment"></i> Chatbot <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="/admin/chatbot/upload">Upload document</a></li>
-                      <li><a href="/document.html">Document</a></li>
-                    </ul>
-                  </li>
                   <li><a><i class="fa fa-user"></i> Student  <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="/admin/students">Student list</a></li>
@@ -69,9 +62,10 @@
                   </li>
                   <li><a><i class="fa fa-home"></i></i> Department <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/admin/departments">Department list</a></li>
-                      <li><a href="/admin/staff">Staff</a></li>
-                      <li><a href="/admin/staff/add">Add staff</a></li>
+                      <li><a href="/admin/v2/departments">Department list</a></li>
+                      <li><a href="/admin/v2/department/add">Add department</a></li>
+                      <li><a href="/admin/v2/staff">Staff</a></li>
+                      <li><a href="/admin/v2/staff/add">Add staff</a></li>
                     </ul>
                   </li>   
                   <li><a><i class="fa fa-bar-chart-o"></i>Report <span class="fa fa-chevron-down"></span></a>
