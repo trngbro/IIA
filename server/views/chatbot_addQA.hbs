@@ -28,11 +28,11 @@
                         <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                        <form action="/admin/v2/chatbot/addQA" method="post" novalidate>
+                        <form novalidate>
                             <div class="field item form-group">
                                 <label class="col-form-label col-md-3 col-sm-3  label-align">Question</label>
                                 <div class="col-md-6 col-sm-6">
-                                    <input class="form-control" name="question" id="answer" required="required" />
+                                    <input class="form-control" name="question" id="question" required="required" />
                                 </div>
                             </div>
                             <div class="field item form-group">
@@ -44,7 +44,7 @@
                             <div class="ln_solid">
                                 <div class="form-group">
                                     <div class="col-md-6 offset-md-3">
-                                        <button type='submit' class="btn btn-primary">Submit</button>
+                                        <button type='button' class="btn btn-primary" id="addQABtn">Submit</button>
                                         <button type='reset' class="btn btn-success">Reset</button>
                                     </div>
                                 </div>

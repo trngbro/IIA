@@ -44,43 +44,18 @@ const QAController = {
         }
     },
 
-    addStaff: async (req, res) => {
+    addQA: async (req, res) => {
         try {
-            const userId = req.body.userId;
-            const departmentId = req.body.departmentId;
-            
-            const staff = await Staff.findOne({user: userId});
-            if(staff){
-                return res.status(500).json({ message: "staff exists" });
-            }
+            const question = req.body.question;
+            const answer = req.body.answer;
 
-            const user = await User.findOne({_id: userId});
-            const department = await Department.findOne({_id: departmentId});
-            if (!user || !department) {
-                return res.status(404).json({ error: 'User or department not found' });
-            }
-
-            const newStaff = new Staff({ user: userId, department: departmentId });
-            await newStaff.save();
-            return res.status(200).json({ success: true });
+            const newQA = new QA({ question: question, answer: answer });
+            await newQA.save();
+            return res.status(200).send("Successed");
         } catch (error) {
             res.status(500).json({ message: "Add erorr" });
         }
-    },
-
-    loadStaff: async (req, res) => {
-        try {
-            const email = req.body.email;
-            const staff = await User.findOne({ email: email });
-            if (staff) {
-                res.status(200).json({ name: staff.name, _id: staff._id});
-            } else {
-                res.status(204).json({ name: null, _id: null });
-            }
-        } catch (error) {
-            res.status(404).json({ name: "Not found staff" });
-        }
-    },
+    }
 }
 
 module.exports = QAController

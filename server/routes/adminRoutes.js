@@ -27,4 +27,5 @@ router.post('/v2/staff/update',staffController.updateStaff)
 router.delete('/v2/staff/delete/:id', staffController.deleteStaff)
 
 router.get('/v2/chatbot/addQA', qAController.getAddQAPage)
+router.post('/v2/chatbot/addQA', qAController.addQA)
 module.exports = router;
