@@ -27,8 +27,11 @@ app.use("/api/message", messageRouter)
 
 
 //server routing
+var isLogin = require("./api/v1/middlewares/authAccount");
+
 const adminRouter = require("./routes/adminRoutes")
 
+app.use("/admin/v2", isLogin)
 app.use("/admin", adminRouter)
 
 

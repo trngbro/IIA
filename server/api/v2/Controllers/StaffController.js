@@ -12,7 +12,7 @@ const staffController = {
                 .populate('department')
                 .exec();
             let arr = []
-
+            
             staffs.forEach(e => {
                 arr.push({
                     id: e._id,

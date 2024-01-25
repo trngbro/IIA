@@ -3374,6 +3374,29 @@ $(document).ready(function () {
     })
 })
 
+//student
+$(document).ready(function () {
+    $("#").click(function () {
+        const question = $('#question').val();
+        const answer = $('#answer').val();
+        if (question == '' || answer == '') {
+            alert('Please fill in all information');
+            return;
+        }
+        $.post("/admin/v2/chatbot/addQA", {
+            question: question,
+            answer: answer
+        }, function (data) {
+            console.log(data)
+            if (data === "Successed") {
+                alert("add successfully")
+            } else {
+                alert("Fail to add")
+            }
+        })
+    })
+})
+
 $(document).ready(function () {
 
     init_sparklines();
