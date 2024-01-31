@@ -3135,6 +3135,25 @@ function init_echarts() {
         });
     }
 }
+
+//cookie
+function loadImage() {
+    const userImageCookie = decodeURIComponent(
+        document.cookie.replace(
+            /(?:(?:^|.*;\s*)userImageUser\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1"
+        )
+    );
+    const username = decodeURIComponent(
+        document.cookie.replace(
+            /(?:(?:^|.*;\s*)userName\s*\=\s*([^;]*).*$)|^.*$/,
+            "$1"
+        )
+    );
+    $('.imgUser').attr('src',userImageCookie);
+    $('.usernameLogin').html(username);
+}
+loadImage();
  
 //Department
 $(document).ready(function () {
@@ -3372,6 +3391,72 @@ $(document).ready(function () {
             }
         })
     })
+
+    $(".btn-edit-qa").click(function () {
+        var id = $(this).attr('id')
+        var data = $('.' + id);
+        var data2 = []
+        data.each(function () {
+            data2.push($(this).text())
+        })
+
+        $('#question').val(data2[1])
+        $('#answer').val(data2[2])
+        $('#qaId').val(id)
+    })
+
+    $("#editQA").click(function () {
+        const question = $('#question').val()
+        const answer = $('#answer').val()
+        const id = $('#qaId').val()
+        $.post("/admin/v2/chatbot/document/update", {
+            id,
+            question,
+            answer
+        }, function (data) {
+            console.log(data)
+            if (data === "Successed") {
+                const data = $('.' + id);
+                data.eq(0).html(question)
+                data.eq(1).html(question)
+                data.eq(2).html(answer)
+                data.eq(3).html(answer)
+                alert("Updated successfully")
+            } else {
+                alert("Fail to updated")
+            }
+        })
+        $('#editform').modal('hide');
+    })
+
+    $(".btn-delete-qa").click(function () {
+        var id = $(this).attr('data')
+        var data = $('.' + id);
+        var data2 = []
+        data.each(function () {
+            data2.push($(this).text())
+        })
+
+        $.post("/admin/v2/chatbot/document/change", {
+            id,
+            active: data2[5]
+        }, function (data) {
+            console.log(data)
+            if (data === "Successed") {
+                if (data2[5] === 'true') {
+                    $('#checkbox_'+id).removeAttr('checked');
+                    $('#active_'+id).html('false')
+                } else {
+                    document.getElementById('checkbox_'+id).checked = true;
+                    $('#active_'+id).html('true')
+                }
+                alert("Updated successfully")
+            } else {
+                alert("Fail to updated")
+            }
+        })
+        $('#editform').modal('hide');
+    })
 })
 
 //student
@@ -3404,7 +3489,6 @@ $(document).ready(function () {
     init_sidebar();
     init_wysiwyg();
     init_InputMask();
-    init_JQVmap();
     init_cropper();
     init_knob();
     init_IonRangeSlider();
@@ -3419,7 +3503,6 @@ $(document).ready(function () {
     init_EasyPieChart();
     init_charts();
     init_echarts();
-    init_morris_charts();
     init_skycons();
     init_select2();
     init_validator();
@@ -3427,7 +3510,6 @@ $(document).ready(function () {
     init_chart_doughnut();
     init_gauge();
     init_PNotify();
-    init_starrr();
     init_calendar();
     init_compose();
     init_CustomNotification();

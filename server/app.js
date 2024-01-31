@@ -10,6 +10,11 @@ connectDB()
 const app = express();
 configure(app)
 
+app.use(function (req, res, next) {
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://upload.wikimedia.org https://lh3.googleusercontent.com");
+    return next();
+});
+  
 //client routing
 const indexRouter = require('./routes/indexRoutes');
 

@@ -4988,3 +4988,7 @@ ul.notifications {
   height: 40px;
   font-size: medium;
 }
+
+#imgUser {
+  max-width: 85px;
+}

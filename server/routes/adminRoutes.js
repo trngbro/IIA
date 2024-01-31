@@ -3,6 +3,7 @@ const adminControllers = require("../api/v1/controllers/adminControllers")
 const departmentController = require("../api/v2/Controllers/DepartmentController")
 const staffController = require("../api/v2/Controllers/StaffController")
 const qAController = require("../api/v2/Controllers/QAController")
+const studentController = require("../api/v2/Controllers/StudentController")
 
 router.get('/login', adminControllers.login)
 router.post('/login', adminControllers.loginChecking)
@@ -13,6 +14,8 @@ router.get('/logout', adminControllers.logOut)
 // router.get('/staff', adminControllers.staff_list)
 // router.get('/staff/add', adminControllers.staff_add)
 // router.get('/chatbot/upload', adminControllers.upload_form)
+
+router.get('/v2/students',studentController.student_list)
 
 router.get('/v2/departments', departmentController.getList)
 router.post('/v2/department/update', departmentController.updateDepartment)
@@ -28,6 +31,9 @@ router.post('/v2/staff/add',staffController.addStaff)
 router.post('/v2/staff/update',staffController.updateStaff)
 router.delete('/v2/staff/delete/:id', staffController.deleteStaff)
 
+router.get('/v2/chatbot/document', qAController.qa_list)
+router.post('/v2/chatbot/document/update', qAController.updateQA)
+router.post('/v2/chatbot/document/change', qAController.changeStatus)
 router.get('/v2/chatbot/addQA', qAController.getAddQAPage)
 router.post('/v2/chatbot/addQA', qAController.addQA)
 module.exports = router;

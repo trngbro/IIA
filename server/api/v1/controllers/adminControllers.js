@@ -34,39 +34,8 @@ const adminControllers = {
         res.clearCookie('userId');
         res.clearCookie('userName');
         res.clearCookie('userImageUser');
-        res.redirect('admin/login');
+        res.redirect('/admin/login');
     },
-
-    student_list: async (req, res) => {
-        try{
-            let students = await User.find({ hd: /^student/ });
-            let arr = []
-            students.forEach(e => {
-                let date = new Date(e.createdAt);
-                const day = date.getDate() > 9 ? date.getDate() : '0'+date.getDate();
-                const month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0'+(date.getMonth() + 1);
-                const year = date.getFullYear();
-                const formattedDate = `${day}/${month}/${year}`;
-
-                arr.push({
-                    name: e.name,
-                    username: e.username,
-                    email: e.email,
-                    verified: e.verified,
-                    createAt: formattedDate
-                })
-            })
-            res.render("student_list",{
-                stylesheets: getStylesheets('table'),
-                javascripts: getJavascripts('table'),
-                students: arr
-            })
-        }catch{
-
-        }
-        
-    },
-
 }
 
 module.exports = adminControllers

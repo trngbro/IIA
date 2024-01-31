@@ -14,6 +14,7 @@ const configure = (app) => {
     app.engine('hbs', exphbs.engine({
         defaultLayout: "layout",
         helpers: {
+            truncateText: fn_helper
             // currentFormat: fn_helper.formatCurrency,
             // getStaffName: fn_helper.getStaffNameFromSalerData,
             // comparingString: fn_helper.equalStringWithString

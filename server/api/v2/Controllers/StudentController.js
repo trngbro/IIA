@@ -1,36 +1,34 @@
 const path = require('path');
 const { getStylesheets, getJavascripts } = require(path.join(__dirname, "../../v1/configs/assets.config"))
-const Department = require(path.join(__dirname, "../../v1/models/Department"))
-const Staff = require(path.join(__dirname, "../../v1/models/Staff"))
 const User = require(path.join(__dirname, "../../v1/models/User"))
 
-const staffController = {
-    staff_list: async (req, res) => {
+const StudentController = {
+    student_list: async (req, res) => {
         try{
-            let staffs = await Staff.find({})
-                .populate('user')
-                .populate('department')
-                .exec();
+            let students = await User.find({ hd: /^student/ });
             let arr = []
-            
-            staffs.forEach(e => {
+            students.forEach(e => {
+                let date = new Date(e.createdAt);
+                const day = date.getDate() > 9 ? date.getDate() : '0'+date.getDate();
+                const month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : '0'+(date.getMonth() + 1);
+                const year = date.getFullYear();
+                const formattedDate = `${day}/${month}/${year}`;
+
                 arr.push({
-                    id: e._id,
-                    username: e.user.username,
-                    name: e.user.name,
-                    email: e.user.email,
-                    department: e.department.name,
-                    rate: e.rate
+                    name: e.name,
+                    username: e.username,
+                    email: e.email,
+                    verified: e.verified,
+                    createAt: formattedDate
                 })
             })
-            
-            res.render("staff_list",{
+            res.render("student_list",{
                 stylesheets: getStylesheets('table'),
                 javascripts: getJavascripts('table'),
-                staff: arr
+                students: arr
             })
-        } catch (error){
-            res.render("error", {error})
+        }catch{
+
         }
         
     },
@@ -74,11 +72,6 @@ const staffController = {
 
             const newStaff = new Staff({ user: userId, department: departmentId });
             await newStaff.save();
-            await Department.findOneAndUpdate({
-                _id: departmentId
-            }, {
-                numberOfEmployees: department.numberOfEmployees + 1
-            })
             return res.status(200).json({ success: true });
         } catch (error) {
             res.status(500).json({ message: "Add erorr" });
@@ -101,25 +94,11 @@ const staffController = {
 
     updateStaff: async (req, res) => {
         try {
-            const staff = await Staff.findOne({_id: req.body.staffId })
             await Staff.findOneAndUpdate({
                 _id: req.body.staffId
             }, {
                 department: req.body.departmentId
             })
-            const oldDepartment = await Department.findOne({_id: staff.department});
-            const newDepartment = await Department.findOne({_id: req.body.departmentId});
-            await Department.findOneAndUpdate({
-                _id: oldDepartment._id
-            }, {
-                numberOfEmployees: oldDepartment.numberOfEmployees - 1
-            })
-            await Department.findOneAndUpdate({
-                _id: newDepartment._id
-            }, {
-                numberOfEmployees: newDepartment.numberOfEmployees + 1
-            })
-
             res.status(200).send("Successed")
         } catch (error) {
             console.log(error)
@@ -129,20 +108,14 @@ const staffController = {
 
     deleteStaff: async (req, res) => {
         const id = req.params.id;
-        const staff = await Staff.findOne({_id: id })
+        const staff = await await Staff.findOne({_id: id })
         if (!staff) {
             return res.status(404).send('staff not found.');
         }
-        const department = await Department.findOne({_id: staff.department});
         const result = await Staff.findOneAndDelete({
             _id: id
         });
         if (result) {
-            await Department.findOneAndUpdate({
-                _id: department._id
-            }, {
-                numberOfEmployees: department.numberOfEmployees - 1
-            })
             return res.status(200).send();
         } else {
             return res.status(500).send('Internal Server Error');
@@ -150,4 +123,4 @@ const staffController = {
     },
 }
 
-module.exports = staffController
+module.exports = StudentController
